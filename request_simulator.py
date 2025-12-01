@@ -9,19 +9,46 @@ import aiohttp
 import time
 import json
 import sys
+import logging
 from datetime import datetime
 from typing import Dict, List
+from urllib.parse import urlparse
+
+# Налаштування логування
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 class RequestSimulator:
+    MAX_RESPONSE_SIZE = 10 * 1024 * 1024  # 10MB максимальний розмір відповіді
+    MAX_CONCURRENT_REQUESTS = 1000  # Максимальна кількість паралельних запитів
+
     def __init__(self, target_url: str, requests_per_second: int = 100, duration: int = 60):
         """
         Ініціалізація симулятора запитів
-        
+
         Args:
             target_url: URL цільового сервера
             requests_per_second: Кількість запитів на секунду
             duration: Тривалість тесту в секундах
+
+        Raises:
+            ValueError: Якщо параметри невалідні
         """
+        # Валідація URL
+        parsed = urlparse(target_url)
+        if not all([parsed.scheme, parsed.netloc]):
+            raise ValueError(f"Невалідний URL: {target_url}")
+
+        # Валідація параметрів
+        if requests_per_second <= 0 or requests_per_second > self.MAX_CONCURRENT_REQUESTS:
+            raise ValueError(f"RPS має бути між 1 та {self.MAX_CONCURRENT_REQUESTS}")
+
+        if duration <= 0 or duration > 3600:
+            raise ValueError("Тривалість має бути між 1 та 3600 секунд")
+
         self.target_url = target_url
         self.rps = requests_per_second
         self.duration = duration
@@ -32,51 +59,102 @@ class RequestSimulator:
             'response_times': [],
             'errors': []
         }
+
+        logger.info(f"Ініціалізовано RequestSimulator: {target_url}, RPS={requests_per_second}, Duration={duration}s")
     
-    async def send_request(self, session: aiohttp.ClientSession) -> Dict:
-        """Відправляє один HTTP запит"""
+    async def send_request(self, session: aiohttp.ClientSession, semaphore: asyncio.Semaphore) -> Dict:
+        """
+        Відправляє один HTTP запит з обмеженням розміру відповіді
+
+        Args:
+            session: aiohttp клієнтська сесія
+            semaphore: Семафор для контролю паралелізму
+
+        Returns:
+            Словник з результатами запиту
+        """
         start_time = time.time()
-        try:
-            async with session.get(self.target_url, timeout=aiohttp.ClientTimeout(total=10)) as response:
-                await response.text()
-                response_time = time.time() - start_time
-                
+        async with semaphore:
+            try:
+                async with session.get(
+                    self.target_url,
+                    timeout=aiohttp.ClientTimeout(total=10),
+                    max_line_size=8192,
+                    max_field_size=8192
+                ) as response:
+                    # Читаємо відповідь з обмеженням розміру
+                    content_length = response.headers.get('Content-Length')
+                    if content_length and int(content_length) > self.MAX_RESPONSE_SIZE:
+                        logger.warning(f"Відповідь занадто велика: {content_length} bytes")
+                        return {
+                            'success': False,
+                            'error': 'Response too large',
+                            'response_time': time.time() - start_time
+                        }
+
+                    await response.text()
+                    response_time = time.time() - start_time
+
+                    return {
+                        'success': response.status == 200,
+                        'status_code': response.status,
+                        'response_time': response_time
+                    }
+
+            except asyncio.TimeoutError:
+                logger.debug(f"Timeout для запиту до {self.target_url}")
                 return {
-                    'success': response.status == 200,
-                    'status_code': response.status,
-                    'response_time': response_time
+                    'success': False,
+                    'error': 'Timeout',
+                    'response_time': time.time() - start_time
                 }
-        except Exception as e:
-            return {
-                'success': False,
-                'error': str(e),
-                'response_time': time.time() - start_time
-            }
+            except aiohttp.ClientError as e:
+                logger.debug(f"Client error: {e}")
+                return {
+                    'success': False,
+                    'error': f'ClientError: {str(e)}',
+                    'response_time': time.time() - start_time
+                }
+            except Exception as e:
+                logger.error(f"Неочікувана помилка: {e}", exc_info=True)
+                return {
+                    'success': False,
+                    'error': str(e),
+                    'response_time': time.time() - start_time
+                }
     
     async def run_simulation(self):
         """Запускає симуляцію HTTP запитів"""
-        print(f"🚀 Початок симуляції запитів")
-        print(f"📊 Цільовий сервер: {self.target_url}")
-        print(f"⚡ Запитів/сек: {self.rps}")
-        print(f"⏱️  Тривалість: {self.duration}с")
+        logger.info(f"🚀 Початок симуляції запитів")
+        logger.info(f"📊 Цільовий сервер: {self.target_url}")
+        logger.info(f"⚡ Запитів/сек: {self.rps}")
+        logger.info(f"⏱️ Тривалість: {self.duration}с")
         print("-" * 50)
-        
-        interval = 1.0 / self.rps  # Інтервал між запитами
+
         end_time = time.time() + self.duration
-        
-        async with aiohttp.ClientSession() as session:
+
+        # Семафор для контролю паралелізму
+        semaphore = asyncio.Semaphore(min(self.rps, 500))
+
+        connector = aiohttp.TCPConnector(limit=500, limit_per_host=500)
+        async with aiohttp.ClientSession(connector=connector) as session:
             while time.time() < end_time:
                 batch_start = time.time()
-                
-                # Відправляємо запити пачками
-                tasks = [self.send_request(session) for _ in range(self.rps)]
+
+                # Відправляємо запити пачками з семафором
+                tasks = [self.send_request(session, semaphore) for _ in range(self.rps)]
                 results = await asyncio.gather(*tasks, return_exceptions=True)
-                
+
                 # Обробка результатів
                 for result in results:
-                    if isinstance(result, dict):
+                    if isinstance(result, Exception):
+                        logger.error(f"Exception в gather: {result}", exc_info=result)
                         self.results['total_requests'] += 1
-                        
+                        self.results['failed_requests'] += 1
+                        self.results['errors'].append(str(result))
+                    elif isinstance(result, dict):
+                        self.results['total_requests'] += 1
+
                         if result['success']:
                             self.results['successful_requests'] += 1
                             self.results['response_times'].append(result['response_time'])
@@ -84,15 +162,15 @@ class RequestSimulator:
                             self.results['failed_requests'] += 1
                             if 'error' in result:
                                 self.results['errors'].append(result['error'])
-                
+
                 # Виводимо прогрес
                 elapsed = int(time.time() - (end_time - self.duration))
                 if elapsed % 10 == 0:
                     success_rate = (self.results['successful_requests'] / max(self.results['total_requests'], 1)) * 100
-                    avg_response = sum(self.results['response_times']) / max(len(self.results['response_times']), 1)
-                    print(f"⏳ {elapsed}с | Успішних: {self.results['successful_requests']} | "
+                    avg_response = sum(self.results['response_times']) / max(len(self.results['response_times']), 1) if self.results['response_times'] else 0
+                    logger.info(f"⏳ {elapsed}с | Успішних: {self.results['successful_requests']} | "
                           f"Успішність: {success_rate:.1f}% | Avg Response: {avg_response:.3f}с")
-                
+
                 # Чекаємо до наступної пачки
                 batch_time = time.time() - batch_start
                 if batch_time < 1.0:

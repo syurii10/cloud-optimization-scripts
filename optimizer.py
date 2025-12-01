@@ -30,9 +30,21 @@ class TOPSISOptimizer:
             raise ValueError(f"Сума ваг має дорівнювати 1.0, поточна: {total_weight}")
     
     def normalize_matrix(self, matrix: np.ndarray) -> np.ndarray:
-        """Нормалізація матриці рішень"""
+        """
+        Нормалізація матриці рішень
+
+        Args:
+            matrix: Вхідна матриця для нормалізації
+
+        Returns:
+            Нормалізована матриця
+        """
         # Векторна нормалізація
         col_sums = np.sqrt(np.sum(matrix ** 2, axis=0))
+
+        # Захист від ділення на нуль
+        col_sums = np.where(col_sums == 0, 1, col_sums)
+
         return matrix / col_sums
     
     def calculate_weighted_matrix(self, normalized_matrix: np.ndarray, weights: np.ndarray) -> np.ndarray:
@@ -156,25 +168,25 @@ class TOPSISOptimizer:
     def print_results(self, optimization_results: Dict):
         """Виводить результати оптимізації"""
         print("\n" + "=" * 70)
-        print("🎯 РЕЗУЛЬТАТИ БАГАТОКРИТЕРІАЛЬНОЇ ОПТИМІЗАЦІЇ (TOPSIS)")
+        print("РЕЗУЛЬТАТИ БАГАТОКРИТЕРІАЛЬНОЇ ОПТИМІЗАЦІЇ (TOPSIS)")
         print("=" * 70)
-        
-        print("\n📊 Ваги критеріїв:")
+
+        print("\nВаги критеріїв:")
         for criterion, weight in self.criteria_weights.items():
             print(f"  {criterion}: {weight:.2f}")
-        
-        print("\n🏆 Рейтинг альтернатив:")
+
+        print("\nРейтинг альтернатив:")
         print("-" * 70)
-        
+
         for result in optimization_results['results']:
             print(f"\n#{result['rank']} {result['alternative']}")
             print(f"   Оцінка TOPSIS: {result['score']:.4f}")
             print(f"   Критерії:")
             for criterion, value in result['criteria'].items():
                 print(f"     - {criterion}: {value}")
-        
+
         print("\n" + "=" * 70)
-        print(f"✨ Найкращий варіант: {optimization_results['best_alternative']}")
+        print(f"Найкращий варіант: {optimization_results['best_alternative']}")
         print("=" * 70)
 
 
@@ -216,10 +228,10 @@ def example_usage():
     optimizer.print_results(results)
     
     # Збереження результатів
-    with open('optimization_results.json', 'w') as f:
-        json.dump(results, f, indent=2)
-    
-    print("\n💾 Результати збережено у optimization_results.json")
+    with open('optimization_results.json', 'w', encoding='utf-8') as f:
+        json.dump(results, f, indent=2, ensure_ascii=False)
+
+    print("\nРезультати збережено у optimization_results.json")
 
 
 if __name__ == "__main__":
