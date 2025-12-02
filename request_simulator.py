@@ -78,9 +78,7 @@ class RequestSimulator:
             try:
                 async with session.get(
                     self.target_url,
-                    timeout=aiohttp.ClientTimeout(total=10),
-                    max_line_size=8192,
-                    max_field_size=8192
+                    timeout=aiohttp.ClientTimeout(total=10)
                 ) as response:
                     # Читаємо відповідь з обмеженням розміру
                     content_length = response.headers.get('Content-Length')
