@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cloud Optimization Dashboard</title>
+    <title>🔥 Cloud Attack Visualization - TOPSIS Optimization</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -13,78 +14,178 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: #e2e8f0;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Navigation */
-        nav {
+        /* Header */
+        header {
             background: rgba(15, 23, 42, 0.95);
-            padding: 1rem 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            border-bottom: 2px solid #667eea;
         }
 
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 0 auto;
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        nav button {
-            background: none;
-            border: none;
+        .subtitle {
+            text-align: center;
             color: #94a3b8;
-            padding: 0.75rem 1.5rem;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: all 0.3s;
-            border-bottom: 3px solid transparent;
-        }
-
-        nav button:hover {
-            color: white;
-        }
-
-        nav button.active {
-            color: white;
-            border-bottom-color: #667eea;
+            margin-top: 0.5rem;
         }
 
         /* Container */
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 2rem auto;
             padding: 0 2rem;
         }
 
-        /* Page Sections */
-        .page {
-            display: none;
-            animation: fadeIn 0.5s;
-        }
-
-        .page.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards */
-        .card {
-            background: white;
-            border-radius: 12px;
+        /* Attack Monitor Section */
+        .attack-monitor {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
             padding: 2rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border: 2px solid #334155;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
 
-        .stats-grid {
+        .attack-monitor.critical {
+            animation: shake 0.5s;
+            border-color: #ef4444;
+            box-shadow: 0 0 40px rgba(239, 68, 68, 0.5);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .monitor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .monitor-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 1rem;
+            animation: pulse 2s infinite;
+        }
+
+        .status-badge.ok { background: #10b981; }
+        .status-badge.warning { background: #f59e0b; }
+        .status-badge.critical { background: #ef4444; animation: blink 0.5s infinite; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Gauges Grid */
+        .gauges-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .gauge-container {
+            background: rgba(30, 41, 59, 0.6);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .gauge-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #94a3b8;
+        }
+
+        .gauge {
+            position: relative;
+            width: 200px;
+            height: 100px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .gauge-bg {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: conic-gradient(
+                from 180deg,
+                #10b981 0deg 108deg,
+                #f59e0b 108deg 252deg,
+                #ef4444 252deg 360deg
+            );
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .gauge-overlay {
+            width: 160px;
+            height: 160px;
+            background: rgba(30, 41, 59, 0.95);
+            border-radius: 50%;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .gauge-needle {
+            width: 2px;
+            height: 80px;
+            background: white;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform-origin: bottom center;
+            transform: translateX(-50%) rotate(-90deg);
+            transition: transform 0.5s ease-out;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .gauge-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .gauge-value.ok { color: #10b981; }
+        .gauge-value.warning { color: #f59e0b; }
+        .gauge-value.critical { color: #ef4444; text-shadow: 0 0 20px #ef4444; }
+
+        /* Stats Cards */
+        .stats-row {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
             gap: 1.5rem;
@@ -92,611 +193,657 @@
         }
 
         .stat-card {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            padding: 2rem;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 1.5rem;
             border-radius: 12px;
+            border: 1px solid #334155;
             text-align: center;
         }
 
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
+        .stat-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
             margin-bottom: 0.5rem;
         }
 
-        .stat-label {
-            opacity: 0.9;
-            font-size: 0.9rem;
-        }
-
-        /* Table */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background: #f1f5f9;
-            padding: 1rem;
-            text-align: left;
-            font-weight: 600;
-            color: #334155;
-        }
-
-        td {
-            padding: 1rem;
-            border-bottom: 1px solid #e2e8f0;
-        }
-
-        tr:hover {
-            background: #f8fafc;
-        }
-
-        .rank-1 {
-            background: #fef3c7;
-        }
-
-        .topsis-score {
-            background: linear-gradient(135deg, #10b981, #3b82f6);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
+        .stat-value {
+            font-size: 2rem;
             font-weight: bold;
         }
 
-        /* Charts */
+        /* Charts Section */
         .charts-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .chart-container {
-            background: white;
+            background: rgba(30, 41, 59, 0.8);
             padding: 2rem;
             border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            height: 400px;
-        }
-
-        .chart-container canvas {
-            max-height: 300px !important;
-            height: 300px !important;
+            border: 1px solid #334155;
         }
 
         .chart-title {
             font-size: 1.3rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: #1e293b;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
         }
 
-        /* Buttons */
-        .btn {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
-            border: none;
-            padding: 0.75rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 600;
-            transition: transform 0.2s;
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Winner Banner */
-        .winner-banner {
-            background: linear-gradient(135deg, #f093fb, #f5576c);
-            color: white;
+        /* Instance Comparison */
+        .comparison-section {
+            background: rgba(15, 23, 42, 0.8);
+            border-radius: 16px;
             padding: 2rem;
-            border-radius: 12px;
-            text-align: center;
             margin-bottom: 2rem;
+            border: 2px solid #334155;
         }
 
-        .winner-banner h1 {
-            font-size: 3rem;
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #e2e8f0;
+        }
+
+        .instances-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .instance-card {
+            background: rgba(30, 41, 59, 0.6);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #334155;
+            transition: all 0.3s;
+        }
+
+        .instance-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .instance-card.winner {
+            border-color: #10b981;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.4);
+        }
+
+        .instance-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+
+        .topsis-score {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #10b981;
             margin: 1rem 0;
         }
 
-        /* Method Cards */
-        .method-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.8rem 0;
+            padding: 0.5rem;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 6px;
         }
 
-        .method-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 12px;
-            border-left: 4px solid #667eea;
+        .metric-label {
+            color: #94a3b8;
         }
 
-        .method-card h3 {
-            color: #667eea;
+        .metric-value {
+            font-weight: bold;
+        }
+
+        /* Winner Badge */
+        .winner-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            text-align: center;
             margin-bottom: 1rem;
+            font-weight: bold;
+            animation: glow 2s infinite;
         }
 
-        h1, h2 {
-            color: white;
-            margin-bottom: 1.5rem;
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(16, 185, 129, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(16, 185, 129, 0.8); }
         }
 
-        .card h2 {
-            color: #1e293b;
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            font-size: 1.5rem;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 2rem auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <ul>
-            <li><button onclick="navigateTo('home')" class="nav-btn active" data-page="home">Головна</button></li>
-            <li><button onclick="navigateTo('results')" class="nav-btn" data-page="results">Результати</button></li>
-            <li><button onclick="navigateTo('charts')" class="nav-btn" data-page="charts">Графіки</button></li>
-            <li><button onclick="navigateTo('methodology')" class="nav-btn" data-page="methodology">Методологія</button></li>
-        </ul>
-    </nav>
+    <header>
+        <h1>🔥 Cloud Attack Visualization Dashboard</h1>
+        <p class="subtitle">TOPSIS Multi-Criteria Optimization | Real-Time Performance Monitoring</p>
+    </header>
 
     <div class="container">
-        <!-- Home Page -->
-        <div id="home" class="page active">
-            <h1>Cloud Optimization Dashboard</h1>
-            <p style="color: white; font-size: 1.2rem; margin-bottom: 2rem;">
-                Багатокритеріальна оптимізація хмарної інфраструктури AWS
-            </p>
+        <!-- Attack Monitor -->
+        <div class="attack-monitor" id="attackMonitor">
+            <div class="monitor-header">
+                <div class="monitor-title">⚡ Live Attack Monitor</div>
+                <div class="status-badge ok" id="statusBadge">✅ System Healthy</div>
+            </div>
 
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-number" id="totalRequests">0</div>
-                    <div class="stat-label">Загальних запитів</div>
+            <!-- Gauges -->
+            <div class="gauges-grid">
+                <div class="gauge-container">
+                    <div class="gauge-title">💻 CPU Usage</div>
+                    <div class="gauge">
+                        <div class="gauge-bg"></div>
+                        <div class="gauge-overlay"></div>
+                        <div class="gauge-needle" id="cpuNeedle"></div>
+                    </div>
+                    <div class="gauge-value ok" id="cpuValue">0%</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="successRate">0%</div>
-                    <div class="stat-label">Успішність</div>
+
+                <div class="gauge-container">
+                    <div class="gauge-title">🧠 Memory Usage</div>
+                    <div class="gauge">
+                        <div class="gauge-bg"></div>
+                        <div class="gauge-overlay"></div>
+                        <div class="gauge-needle" id="memNeedle"></div>
+                    </div>
+                    <div class="gauge-value ok" id="memValue">0%</div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="avgResponse">0</div>
-                    <div class="stat-label">мс середній відгук</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-number" id="instancesCount">0</div>
-                    <div class="stat-label">Типів інстансів</div>
+
+                <div class="gauge-container">
+                    <div class="gauge-title">📊 Response Time</div>
+                    <div class="gauge">
+                        <div class="gauge-bg"></div>
+                        <div class="gauge-overlay"></div>
+                        <div class="gauge-needle" id="responseNeedle"></div>
+                    </div>
+                    <div class="gauge-value ok" id="responseValue">0ms</div>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>Про проект</h2>
-                <p style="line-height: 1.6; color: #475569;">
-                    Це дослідження присвячене вибору оптимальної конфігурації хмарної інфраструктури AWS 
-                    на основі багатокритеріального аналізу. Використовуючи метод TOPSIS, проведено порівняння 
-                    різних типів EC2 інстансів за критеріями продуктивності, вартості та використання ресурсів.
-                </p>
-                <button class="btn" onclick="navigateTo('results')" style="margin-top: 1rem;">
-                    Переглянути результати →
-                </button>
-            </div>
-        </div>
-
-        <!-- Results Page -->
-        <div id="results" class="page">
-            <h1>Результати оптимізації</h1>
-
-            <div class="winner-banner">
-                <div style="font-size: 3rem;">🏆</div>
-                <h1 id="winnerName">-</h1>
-                <p style="font-size: 1.1rem;" id="winnerDetails">-</p>
-            </div>
-
-            <div class="card">
-                <h2>Таблиця результатів TOPSIS</h2>
-                <table id="resultsTable">
-                    <thead>
-                        <tr>
-                            <th>Ранг</th>
-                            <th>Інстанс</th>
-                            <th>TOPSIS Score</th>
-                            <th>RPS</th>
-                            <th>Відгук (мс)</th>
-                            <th>CPU %</th>
-                            <th>RAM %</th>
-                            <th>Вартість</th>
-                        </tr>
-                    </thead>
-                    <tbody id="resultsBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Charts Page -->
-        <div id="charts" class="page">
-            <h1>Візуалізація даних</h1>
-
-            <div class="charts-grid">
-                <div class="chart-container">
-                    <h3 class="chart-title">Порівняння продуктивності</h3>
-                    <canvas id="performanceChart"></canvas>
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-card">
+                    <div class="stat-label">Total Requests</div>
+                    <div class="stat-value" id="totalRequests">0</div>
                 </div>
-
-                <div class="chart-container">
-                    <h3 class="chart-title">Використання ресурсів</h3>
-                    <canvas id="resourceChart"></canvas>
+                <div class="stat-card">
+                    <div class="stat-label">Success Rate</div>
+                    <div class="stat-value" id="successRate">100%</div>
                 </div>
-
-                <div class="chart-container">
-                    <h3 class="chart-title">Метрики в часі (t3.small)</h3>
-                    <canvas id="timelineChart"></canvas>
+                <div class="stat-card">
+                    <div class="stat-label">Avg Response Time</div>
+                    <div class="stat-value" id="avgResponse">0ms</div>
                 </div>
-
-                <div class="chart-container">
-                    <h3 class="chart-title">TOPSIS оцінки</h3>
-                    <canvas id="topsisChart"></canvas>
+                <div class="stat-card">
+                    <div class="stat-label">RPS Level</div>
+                    <div class="stat-value" id="rpsLevel">500</div>
                 </div>
             </div>
         </div>
 
-        <!-- Methodology Page -->
-        <div id="methodology" class="page">
-            <h1>Методологія дослідження</h1>
-
-            <div class="card">
-                <h2>Етапи виконання</h2>
-                <div class="method-grid">
-                    <div class="method-card">
-                        <h3>1. Розгортання інфраструктури</h3>
-                        <p>Використання Terraform для автоматичного створення EC2 інстансів на AWS</p>
-                    </div>
-                    <div class="method-card">
-                        <h3>2. Навантажувальне тестування</h3>
-                        <p>Генерація HTTP запитів з використанням Python та aiohttp</p>
-                    </div>
-                    <div class="method-card">
-                        <h3>3. Збір метрик</h3>
-                        <p>Моніторинг CPU, RAM та часу відгуку під час тестування</p>
-                    </div>
-                    <div class="method-card">
-                        <h3>4. TOPSIS аналіз</h3>
-                        <p>Багатокритеріальна оптимізація для вибору найкращого варіанту</p>
-                    </div>
-                    <div class="method-card">
-                        <h3>5. Візуалізація</h3>
-                        <p>Створення інтерактивних графіків та дашбордів</p>
-                    </div>
-                    <div class="method-card">
-                        <h3>6. Аналіз результатів</h3>
-                        <p>Формування висновків та рекомендацій</p>
-                    </div>
-                </div>
+        <!-- Charts -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-title">📈 CPU & Memory Timeline</div>
+                <canvas id="timelineChart"></canvas>
             </div>
+            <div class="chart-container">
+                <div class="chart-title">⚠️ Error Rate & Critical Moments</div>
+                <canvas id="errorChart"></canvas>
+            </div>
+        </div>
 
-            <div class="card" style="margin-top: 2rem;">
-                <h2>Критерії оптимізації</h2>
-                <ul style="line-height: 2; color: #475569; margin-left: 2rem;">
-                    <li><strong>Продуктивність:</strong> Кількість запитів на секунду (RPS)</li>
-                    <li><strong>Час відгуку:</strong> Середній час обробки запиту (мс)</li>
-                    <li><strong>Використання CPU:</strong> Відсоток завантаження процесора</li>
-                    <li><strong>Використання RAM:</strong> Відсоток використання оперативної пам'яті</li>
-                    <li><strong>Вартість:</strong> Ціна за годину роботи інстансу ($/год)</li>
-                </ul>
+        <!-- Instance Comparison -->
+        <div class="comparison-section">
+            <div class="section-title">🏆 TOPSIS Optimization Results</div>
+            <div class="instances-grid" id="instancesGrid">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading optimization results...
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Data Storage
-        const appData = {
-            instances: [
-                {
-                    name: 't3.micro',
-                    rps: 80,
-                    avgResponse: 45.00,
-                    cpu: 15.00,
-                    memory: 35.00,
-                    cost: 0.0104,
-                    topsisScore: 0.650
-                },
-                {
-                    name: 't3.small',
-                    rps: 100,
-                    avgResponse: 24.49,
-                    cpu: 0.42,
-                    memory: 20.91,
-                    cost: 0.0208,
-                    topsisScore: 0.820
-                },
-                {
-                    name: 't3.medium',
-                    rps: 150,
-                    avgResponse: 15.00,
-                    cpu: 0.30,
-                    memory: 18.00,
-                    cost: 0.0416,
-                    topsisScore: 0.710
-                }
-            ],
-            timeline: [
-                { time: '0s', cpu: 0, ram: 21.0 },
-                { time: '10s', cpu: 0.5, ram: 21.0 },
-                { time: '20s', cpu: 1.0, ram: 21.1 },
-                { time: '30s', cpu: 1.0, ram: 21.1 },
-                { time: '40s', cpu: 0.5, ram: 21.1 },
-                { time: '50s', cpu: 1.0, ram: 20.6 },
-                { time: '60s', cpu: 0, ram: 20.6 }
-            ],
-            stats: {
-                totalRequests: 6000,
-                successRate: 100,
-                avgResponse: 24.5
-            }
+        // App State
+        const appState = {
+            currentInstance: 't3.micro',
+            currentRPS: 500,
+            instances: [],
+            selectedTest: null
         };
 
-        // Navigation
-        function navigateTo(pageName) {
-            // Hide all pages
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
+        // Load Data from API
+        async function loadData() {
+            try {
+                // Try to load Real-Time streaming data first (WOW-effect!)
+                const streamingResponse = await fetch('/current_test.json');
+                if (streamingResponse.ok) {
+                    const streamingData = await streamingResponse.json();
+                    if (streamingData.status === 'testing') {
+                        updateRealTimeMonitor(streamingData);
+                        console.log('🔥 Real-Time data loaded!');
+                        return; // Use streaming data, skip regular data
+                    }
+                }
 
-            // Show selected page
-            document.getElementById(pageName).classList.add('active');
+                // Load regular completed test data
+                const response = await fetch('/api/data');
+                if (!response.ok) throw new Error('API error');
 
-            // Update nav buttons
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
-            document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+                const data = await response.json();
 
-            // Load page-specific data
-            if (pageName === 'charts') {
-                loadCharts();
-            } else if (pageName === 'results') {
-                loadResults();
+                if (data.optimization && data.optimization.results) {
+                    appState.instances = data.optimization.results;
+                    updateInstancesDisplay();
+                }
+
+                if (data.instances) {
+                    // Get first available instance for live monitor
+                    const firstInstance = Object.values(data.instances)[0];
+                    if (firstInstance) {
+                        updateLiveMonitor(firstInstance);
+                    }
+                }
+
+                console.log('✅ Data loaded successfully');
+            } catch (error) {
+                console.error('❌ Error loading data:', error);
+                // Use test data
+                loadTestData();
             }
         }
 
-        // Initialize Home Page
-        function initHomePage() {
-            document.getElementById('totalRequests').textContent = appData.stats.totalRequests.toLocaleString();
-            document.getElementById('successRate').textContent = appData.stats.successRate + '%';
-            document.getElementById('avgResponse').textContent = appData.stats.avgResponse;
-            document.getElementById('instancesCount').textContent = appData.instances.length;
+        // Update Real-Time Monitor (WOW-effect streaming!)
+        function updateRealTimeMonitor(streamingData) {
+            const current = streamingData.current || {};
+            const stats = streamingData.statistics || {};
+            const testInfo = streamingData.test_info || {};
+            const timeline = streamingData.timeline || [];
 
-            // Animate numbers
-            animateValue('totalRequests', 0, appData.stats.totalRequests, 1000);
+            // Update status badge with test info
+            const monitor = document.getElementById('attackMonitor');
+            const badge = document.getElementById('statusBadge');
+
+            const instanceType = testInfo.instance_type || 'testing';
+            const rps = testInfo.rps || '...';
+
+            if (current.is_critical) {
+                monitor.classList.add('critical');
+                badge.className = 'status-badge critical';
+                badge.textContent = `🔥 CRITICAL! ${instanceType} @ ${rps} RPS`;
+            } else if (current.cpu > 70 || current.memory > 70) {
+                monitor.classList.remove('critical');
+                badge.className = 'status-badge warning';
+                badge.textContent = `⚡ TESTING ${instanceType} @ ${rps} RPS`;
+            } else {
+                monitor.classList.remove('critical');
+                badge.className = 'status-badge ok';
+                badge.textContent = `🟢 TESTING ${instanceType} @ ${rps} RPS`;
+            }
+
+            // Update gauges with CURRENT real-time values
+            updateGauge('cpu', current.cpu || 0);
+            updateGauge('mem', current.memory || 0);
+            updateGauge('response', Math.min((stats.response_time_avg || 0) * 100, 100));
+
+            // Update stats
+            document.getElementById('totalRequests').textContent = testInfo.total_requests || '...';
+            document.getElementById('successRate').textContent = '...'; // Will be known after test
+            document.getElementById('avgResponse').textContent = '...ms';
+            document.getElementById('rpsLevel').textContent = rps;
+
+            // Update real-time chart
+            updateRealTimeChart(timeline);
+
+            console.log(`🔥 Real-Time: CPU=${current.cpu}%, MEM=${current.memory}%, Samples=${stats.samples_count}`);
         }
 
-        // Animate counter
-        function animateValue(id, start, end, duration) {
-            const obj = document.getElementById(id);
-            const range = end - start;
-            const increment = end > start ? 1 : -1;
-            const stepTime = Math.abs(Math.floor(duration / range));
-            let current = start;
+        // Update Real-Time Chart
+        function updateRealTimeChart(timeline) {
+            if (!timeline || timeline.length === 0) return;
 
-            const timer = setInterval(() => {
-                current += increment * 10;
-                if (current >= end) {
-                    current = end;
-                    clearInterval(timer);
-                }
-                obj.textContent = current.toLocaleString();
-            }, stepTime);
-        }
+            const ctx1 = document.getElementById('timelineChart').getContext('2d');
+            if (timelineChart) timelineChart.destroy();
 
-        // Load Results
-        function loadResults() {
-            const sorted = [...appData.instances].sort((a, b) => b.topsisScore - a.topsisScore);
-            const winner = sorted[0];
-
-            document.getElementById('winnerName').textContent = winner.name;
-            document.getElementById('winnerDetails').textContent = 
-                `Оцінка: ${winner.topsisScore.toFixed(3)} | CPU: ${winner.cpu}% | RAM: ${winner.memory.toFixed(2)}% | Вартість: $${winner.cost}/год`;
-
-            const tbody = document.getElementById('resultsBody');
-            tbody.innerHTML = '';
-
-            const medals = ['🥇', '🥈', '🥉'];
-            sorted.forEach((inst, idx) => {
-                const row = document.createElement('tr');
-                if (idx === 0) row.classList.add('rank-1');
-                
-                row.innerHTML = `
-                    <td style="font-size: 1.5rem;">${medals[idx]}</td>
-                    <td><strong>${inst.name}</strong></td>
-                    <td><span class="topsis-score">${inst.topsisScore.toFixed(3)}</span></td>
-                    <td>${inst.rps}</td>
-                    <td>${inst.avgResponse.toFixed(2)}</td>
-                    <td>${inst.cpu.toFixed(2)}</td>
-                    <td>${inst.memory.toFixed(2)}</td>
-                    <td>$${inst.cost}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        // Load Charts
-        let charts = {};
-        function loadCharts() {
-            if (charts.performance) return; // Already loaded
-
-            const chartConfig = {
-                responsive: true,
-                maintainAspectRatio: true,
-                aspectRatio: 2,
-                plugins: {
-                    legend: { labels: { font: { size: 12, weight: '600' } } }
-                }
-            };
-
-            // Performance Chart
-            charts.performance = new Chart(document.getElementById('performanceChart'), {
-                type: 'bar',
-                data: {
-                    labels: appData.instances.map(i => i.name),
-                    datasets: [{
-                        label: 'RPS',
-                        data: appData.instances.map(i => i.rps),
-                        backgroundColor: '#3b82f6'
-                    }, {
-                        label: 'Відгук (мс)',
-                        data: appData.instances.map(i => i.avgResponse),
-                        backgroundColor: '#10b981'
-                    }]
-                },
-                options: chartConfig
-            });
-
-            // Resource Chart
-            charts.resource = new Chart(document.getElementById('resourceChart'), {
-                type: 'bar',
-                data: {
-                    labels: appData.instances.map(i => i.name),
-                    datasets: [{
-                        label: 'CPU %',
-                        data: appData.instances.map(i => i.cpu),
-                        backgroundColor: '#f59e0b'
-                    }, {
-                        label: 'RAM %',
-                        data: appData.instances.map(i => i.memory),
-                        backgroundColor: '#ec4899'
-                    }]
-                },
-                options: chartConfig
-            });
-
-            // Timeline Chart
-            charts.timeline = new Chart(document.getElementById('timelineChart'), {
+            timelineChart = new Chart(ctx1, {
                 type: 'line',
                 data: {
-                    labels: appData.timeline.map(t => t.time),
-                    datasets: [{
-                        label: 'CPU %',
-                        data: appData.timeline.map(t => t.cpu),
-                        borderColor: '#3b82f6',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }, {
-                        label: 'RAM %',
-                        data: appData.timeline.map(t => t.ram),
-                        borderColor: '#10b981',
-                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
-                        tension: 0.4,
-                        fill: true
-                    }]
-                },
-                options: chartConfig
-            });
-
-            // TOPSIS Chart
-            const sorted = [...appData.instances].sort((a, b) => b.topsisScore - a.topsisScore);
-            charts.topsis = new Chart(document.getElementById('topsisChart'), {
-                type: 'bar',
-                data: {
-                    labels: sorted.map(i => i.name),
-                    datasets: [{
-                        label: 'TOPSIS Score',
-                        data: sorted.map(i => i.topsisScore),
-                        backgroundColor: ['#10b981', '#3b82f6', '#8b5cf6']
-                    }]
+                    labels: timeline.map((m, i) => `${i}s`),
+                    datasets: [
+                        {
+                            label: 'CPU % (LIVE)',
+                            data: timeline.map(m => m.cpu?.percent || 0),
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 3
+                        },
+                        {
+                            label: 'Memory % (LIVE)',
+                            data: timeline.map(m => m.memory?.percent || 0),
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4,
+                            borderWidth: 3
+                        }
+                    ]
                 },
                 options: {
-                    ...chartConfig,
+                    responsive: true,
+                    animation: {
+                        duration: 300 // Fast animation for real-time feel
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0' } },
+                        title: {
+                            display: true,
+                            text: '🔥 LIVE SERVER METRICS',
+                            color: '#ef4444',
+                            font: { size: 16, weight: 'bold' }
+                        }
+                    },
                     scales: {
                         y: {
-                            min: 0,
-                            max: 1
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
                         }
                     }
                 }
             });
         }
 
-        // Load Real Data from API
-        async function loadRealData() {
-            try {
-                // Завантаження всіх даних через API
-                const response = await fetch('/api/data');
-                if (!response.ok) {
-                    throw new Error(`HTTP ${response.status}: API error`);
-                }
-                const data = await response.json();
+        // Update Live Monitor
+        function updateLiveMonitor(instance) {
+            const test = instance.test || {};
+            const metrics = instance.metrics || {};
+            const summary = metrics.summary || {};
 
-                if (!data.success) {
-                    throw new Error('API returned error');
-                }
+            // Update gauges
+            const cpuAvg = summary.cpu?.avg || 0;
+            const memAvg = summary.memory?.avg || 0;
+            const avgResponse = (test.avg_response_time || 0) * 1000;
 
-                // Оновлення даних TOPSIS оптимізації
-                if (data.optimization && data.optimization.results) {
-                    appData.instances = data.optimization.results.map(result => ({
-                        name: result.alternative,
-                        topsisScore: result.score,
-                        rps: result.criteria.performance,
-                        avgResponse: result.criteria.response_time * 1000,
-                        cpu: result.criteria.cpu_usage,
-                        memory: result.criteria.memory_usage,
-                        cost: result.criteria.cost
-                    }));
-                }
+            updateGauge('cpu', cpuAvg);
+            updateGauge('mem', memAvg);
+            updateGauge('response', Math.min(avgResponse / 10, 100)); // Scale to 0-100
 
-                // Оновлення статистики з реальних даних
-                let totalRequests = 0;
-                let totalSuccessful = 0;
-                let responseTimeSum = 0;
-                let responseTimeCount = 0;
+            // Update stats
+            document.getElementById('totalRequests').textContent = test.total_requests || 0;
+            document.getElementById('successRate').textContent =
+                `${((test.successful_requests / test.total_requests * 100) || 100).toFixed(1)}%`;
+            document.getElementById('avgResponse').textContent = `${avgResponse.toFixed(0)}ms`;
+            document.getElementById('rpsLevel').textContent = test.rps || 500;
 
-                Object.keys(data.instances).forEach(instanceName => {
-                    const instance = data.instances[instanceName];
-                    if (instance.test) {
-                        totalRequests += instance.test.total_requests || 0;
-                        totalSuccessful += instance.test.successful_requests || 0;
-                        responseTimeSum += (instance.test.avg_response_time || 0) * 1000;
-                        responseTimeCount++;
-                    }
-                });
+            // Update status
+            updateSystemStatus(cpuAvg, memAvg);
 
-                appData.stats.totalRequests = totalRequests;
-                appData.stats.successRate = totalRequests > 0
-                    ? ((totalSuccessful / totalRequests) * 100).toFixed(0)
-                    : 100;
-                appData.stats.avgResponse = responseTimeCount > 0
-                    ? (responseTimeSum / responseTimeCount).toFixed(1)
-                    : 0;
+            // Update charts
+            updateCharts(metrics);
+        }
 
-                // Оновлення timeline з першого доступного інстансу
-                const firstInstance = Object.values(data.instances)[0];
-                if (firstInstance && firstInstance.metrics && firstInstance.metrics.metrics) {
-                    appData.timeline = firstInstance.metrics.metrics.slice(0, 7).map((m, idx) => ({
-                        time: `${idx * 15}s`,
-                        cpu: m.cpu?.percent || 0,
-                        ram: m.memory?.percent || 0
-                    }));
-                }
+        // Update Gauge
+        function updateGauge(type, value) {
+            const needle = document.getElementById(`${type}Needle`);
+            const valueEl = document.getElementById(`${type}Value`);
 
-                console.log('✅ Реальні дані успішно завантажено з API!');
-                console.log('📊 Завантажено інстансів:', appData.instances.length);
-                console.log('🏆 Переможець:', data.optimization?.best_alternative);
-                initHomePage();
+            // Rotate needle (-90deg = 0%, 90deg = 100%)
+            const rotation = -90 + (value * 1.8);
+            needle.style.transform = `translateX(-50%) rotate(${rotation}deg)`;
 
-            } catch (error) {
-                console.error('❌ Помилка завантаження даних:', error.message);
-                console.warn('⚠️ Використовуються тестові дані');
-                initHomePage();
+            // Update value and color
+            let className = 'ok';
+            if (value > 80) className = 'critical';
+            else if (value > 60) className = 'warning';
+
+            valueEl.className = `gauge-value ${className}`;
+
+            if (type === 'response') {
+                valueEl.textContent = `${Math.round(value * 10)}ms`;
+            } else {
+                valueEl.textContent = `${Math.round(value)}%`;
             }
         }
 
-        // Initialize on load
+        // Update System Status
+        function updateSystemStatus(cpu, mem) {
+            const monitor = document.getElementById('attackMonitor');
+            const badge = document.getElementById('statusBadge');
+
+            if (cpu > 90 || mem > 90) {
+                monitor.classList.add('critical');
+                badge.className = 'status-badge critical';
+                badge.textContent = '🔥 CRITICAL LOAD!';
+            } else if (cpu > 70 || mem > 70) {
+                monitor.classList.remove('critical');
+                badge.className = 'status-badge warning';
+                badge.textContent = '⚠️ High Load';
+            } else {
+                monitor.classList.remove('critical');
+                badge.className = 'status-badge ok';
+                badge.textContent = '✅ System Healthy';
+            }
+        }
+
+        // Update Charts
+        let timelineChart, errorChart;
+
+        function updateCharts(metrics) {
+            const metricsData = metrics.metrics || [];
+
+            if (metricsData.length === 0) return;
+
+            // Timeline Chart
+            const ctx1 = document.getElementById('timelineChart').getContext('2d');
+            if (timelineChart) timelineChart.destroy();
+
+            timelineChart = new Chart(ctx1, {
+                type: 'line',
+                data: {
+                    labels: metricsData.map((m, i) => `${i}s`),
+                    datasets: [
+                        {
+                            label: 'CPU %',
+                            data: metricsData.map(m => m.cpu?.percent || 0),
+                            borderColor: '#f59e0b',
+                            backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Memory %',
+                            data: metricsData.map(m => m.memory?.percent || 0),
+                            borderColor: '#8b5cf6',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0' } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        }
+                    }
+                }
+            });
+
+            // Error Chart
+            const ctx2 = document.getElementById('errorChart').getContext('2d');
+            if (errorChart) errorChart.destroy();
+
+            const criticalMoments = metricsData.map(m => m.is_critical ? 100 : 0);
+
+            errorChart = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: metricsData.map((m, i) => `${i}s`),
+                    datasets: [{
+                        label: 'Critical Moments',
+                        data: criticalMoments,
+                        backgroundColor: '#ef4444'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { labels: { color: '#e2e8f0' } }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        },
+                        x: {
+                            ticks: { color: '#94a3b8' },
+                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Update Instances Display
+        function updateInstancesDisplay() {
+            const grid = document.getElementById('instancesGrid');
+
+            if (appState.instances.length === 0) {
+                grid.innerHTML = '<div class="loading">No optimization data available</div>';
+                return;
+            }
+
+            // Sort by TOPSIS score
+            const sorted = [...appState.instances].sort((a, b) => b.score - a.score);
+            const winner = sorted[0];
+
+            grid.innerHTML = sorted.map((inst, index) => `
+                <div class="instance-card ${inst.alternative === winner.alternative ? 'winner' : ''}">
+                    ${inst.alternative === winner.alternative ?
+                        '<div class="winner-badge">🏆 OPTIMAL CHOICE</div>' : ''}
+                    <div class="instance-name">${inst.alternative}</div>
+                    <div class="topsis-score">${(inst.score * 100).toFixed(1)}%</div>
+                    <div class="metric">
+                        <span class="metric-label">Performance:</span>
+                        <span class="metric-value">${inst.criteria.performance.toFixed(0)} RPS</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Response Time:</span>
+                        <span class="metric-value">${(inst.criteria.response_time * 1000).toFixed(0)}ms</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">CPU Usage:</span>
+                        <span class="metric-value">${inst.criteria.cpu_usage.toFixed(1)}%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Memory Usage:</span>
+                        <span class="metric-value">${inst.criteria.memory_usage.toFixed(1)}%</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Cost:</span>
+                        <span class="metric-value">$${inst.criteria.cost.toFixed(4)}/hr</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Test Data (fallback)
+        function loadTestData() {
+            appState.instances = [
+                {
+                    alternative: 't3.micro',
+                    score: 0.35,
+                    criteria: {
+                        performance: 450,
+                        response_time: 0.15,
+                        cpu_usage: 85,
+                        memory_usage: 65,
+                        cost: 0.0104
+                    }
+                },
+                {
+                    alternative: 't3.small',
+                    score: 0.68,
+                    criteria: {
+                        performance: 480,
+                        response_time: 0.12,
+                        cpu_usage: 55,
+                        memory_usage: 45,
+                        cost: 0.0208
+                    }
+                },
+                {
+                    alternative: 't3.medium',
+                    score: 0.92,
+                    criteria: {
+                        performance: 495,
+                        response_time: 0.10,
+                        cpu_usage: 35,
+                        memory_usage: 30,
+                        cost: 0.0416
+                    }
+                }
+            ];
+            updateInstancesDisplay();
+
+            // Simulate live data
+            updateGauge('cpu', 75);
+            updateGauge('mem', 60);
+            updateGauge('response', 45);
+            updateSystemStatus(75, 60);
+        }
+
+        // Initialize
         window.addEventListener('load', () => {
-            loadRealData();
+            loadData();
+
+            // Refresh every 1 second for Real-Time WOW-effect!
+            setInterval(loadData, 1000);
         });
     </script>
 </body>

@@ -209,7 +209,89 @@ class CloudOrchestrator:
 
         self.log(f"Сервер {ip_address} готовий!", "SUCCESS")
         return True
-    
+
+    def monitor_test_realtime(self, target_ip, instance_type, rps, duration):
+        """Real-Time моніторинг тесту з оновленням dashboard (WOW-ефект!)"""
+        streaming_file = Path("current_test.json")
+        start_time = time.time()
+        end_time = start_time + duration
+
+        self.log(f"📊 Real-Time streaming в {streaming_file}...", "INFO")
+
+        while time.time() < end_time:
+            try:
+                # Завантажуємо поточні метрики з target сервера
+                temp_metrics = Path("temp_metrics.json")
+                success, _, _ = self.run_command(
+                    f"scp -o StrictHostKeyChecking=no ubuntu@{target_ip}:/home/ubuntu/scripts/metrics.json {temp_metrics}"
+                )
+
+                if success and temp_metrics.exists():
+                    with open(temp_metrics) as f:
+                        metrics_data = json.load(f)
+
+                    # Отримуємо останні метрики
+                    metrics_list = metrics_data.get('metrics', [])
+                    if metrics_list:
+                        latest = metrics_list[-1]
+                        summary = metrics_data.get('summary', {})
+
+                        # Створюємо streaming data для dashboard
+                        streaming_data = {
+                            'status': 'testing',
+                            'timestamp': latest.get('timestamp'),
+                            'test_info': {
+                                'instance_type': instance_type,
+                                'rps': rps,
+                                'total_requests': rps * int(time.time() - start_time)
+                            },
+                            'current': {
+                                'cpu': latest['cpu']['percent'],
+                                'memory': latest['memory']['percent'],
+                                'is_critical': latest['cpu']['percent'] > 90 or latest['memory']['percent'] > 90
+                            },
+                            'statistics': {
+                                'cpu_avg': summary.get('cpu', {}).get('avg', 0),
+                                'cpu_peak': summary.get('cpu', {}).get('peak', 0),
+                                'memory_avg': summary.get('memory', {}).get('avg', 0),
+                                'memory_peak': summary.get('memory', {}).get('peak', 0),
+                                'samples_count': len(metrics_list),
+                                'critical_moments_count': summary.get('critical_moments_count', 0)
+                            },
+                            'timeline': metrics_list[-50:] if len(metrics_list) > 50 else metrics_list
+                        }
+
+                        # Записуємо в локальний файл для dashboard
+                        with open(streaming_file, 'w') as f:
+                            json.dump(streaming_data, f, indent=2)
+
+                        elapsed = int(time.time() - start_time)
+                        self.log(
+                            f"📊 {elapsed}s: CPU={latest['cpu']['percent']:.1f}% | "
+                            f"RAM={latest['memory']['percent']:.1f}% | "
+                            f"Samples={len(metrics_list)}",
+                            "PROGRESS"
+                        )
+
+                    # Видаляємо тимчасовий файл
+                    temp_metrics.unlink()
+
+            except Exception as e:
+                self.log(f"Real-Time моніторинг: {e}", "WARN")
+
+            # Оновлюємо кожні 2 секунди
+            time.sleep(2)
+
+        # Після завершення тесту змінюємо статус
+        if streaming_file.exists():
+            with open(streaming_file) as f:
+                final_data = json.load(f)
+            final_data['status'] = 'completed'
+            with open(streaming_file, 'w') as f:
+                json.dump(final_data, f, indent=2)
+
+        self.log("✅ Real-Time моніторинг завершено", "SUCCESS")
+
     def run_test(self, instance_type, rps, target_ip, client_ip, target_http_ip=None):
         """Запуск одного тесту
 
@@ -244,20 +326,27 @@ class CloudOrchestrator:
         self.log("Очікування ініціалізації (5 сек)...", "PROGRESS")
         time.sleep(5)
 
-        # 2. Запуск request_simulator на client сервері
+        # 2. Запуск request_simulator на client сервері в фоні
         self.log(f"Запуск генерації навантаження {rps} RPS на client ({client_ip})...", "INFO")
         self.log(f"Target HTTP URL: http://{target_http_ip}", "INFO")
         self.log(f"Тривалість тесту: {self.test_duration} сек", "INFO")
 
+        # Запускаємо request_simulator в фоновому режимі
         ssh_command = (
-            f'ssh -o StrictHostKeyChecking=no ubuntu@{client_ip} '
-            f'"cd /home/ubuntu/scripts && python3 request_simulator.py http://{target_http_ip} {rps} {self.test_duration}"'
+            f'ssh -o StrictHostKeyChecking=no -f ubuntu@{client_ip} '
+            f'"bash -c \'cd /home/ubuntu/scripts && python3 request_simulator.py http://{target_http_ip} {rps} {self.test_duration} > test.log 2>&1 &\'"'
         )
         success, stdout, stderr = self.run_command(ssh_command)
 
         if not success:
-            self.log(f"Помилка тестування: {stderr}", "ERROR")
+            self.log(f"Помилка запуску тестування: {stderr}", "ERROR")
             return None
+
+        self.log("Генерація навантаження запущена", "SUCCESS")
+
+        # Real-Time моніторинг під час виконання тесту (WOW-ефект!)
+        self.log("🔥 Real-Time моніторинг активовано!", "INFO")
+        self.monitor_test_realtime(target_ip, instance_type, rps, self.test_duration)
 
         self.log("Генерація навантаження завершена", "SUCCESS")
         

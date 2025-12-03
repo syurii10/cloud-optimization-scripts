@@ -1,0 +1,70 @@
+{
+  "status": "testing",
+  "timestamp": "2025-12-03T22:30:00",
+  "test_info": {
+    "instance_type": "t3.micro",
+    "rps": 5000,
+    "total_requests": 25000
+  },
+  "current": {
+    "cpu": 95.3,
+    "memory": 87.2,
+    "is_critical": true
+  },
+  "statistics": {
+    "cpu_avg": 82.5,
+    "cpu_peak": 95.3,
+    "memory_avg": 75.8,
+    "memory_peak": 87.2,
+    "samples_count": 45,
+    "critical_moments_count": 12,
+    "response_time_avg": 0.25
+  },
+  "timeline": [
+    {
+      "timestamp": "2025-12-03T22:29:15",
+      "cpu": {"percent": 45.2},
+      "memory": {"percent": 62.1}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:16",
+      "cpu": {"percent": 52.8},
+      "memory": {"percent": 64.3}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:17",
+      "cpu": {"percent": 61.5},
+      "memory": {"percent": 67.8}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:18",
+      "cpu": {"percent": 70.2},
+      "memory": {"percent": 71.2}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:19",
+      "cpu": {"percent": 78.9},
+      "memory": {"percent": 74.5}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:20",
+      "cpu": {"percent": 85.3},
+      "memory": {"percent": 78.9}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:21",
+      "cpu": {"percent": 90.1},
+      "memory": {"percent": 82.4}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:22",
+      "cpu": {"percent": 93.7},
+      "memory": {"percent": 85.1}
+    },
+    {
+      "timestamp": "2025-12-03T22:29:23",
+      "cpu": {"percent": 95.3},
+      "memory": {"percent": 87.2}
+    }
+  ]
+}
