@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloud Optimization Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        nav button {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            padding: 0.75rem 1.5rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        nav button:hover {
+            color: white;
+        }
+
+        nav button.active {
+            color: white;
+            border-bottom-color: #667eea;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Sections */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f1f5f9;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .rank-1 {
+            background: #fef3c7;
+        }
+
+        .topsis-score {
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* Charts */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            height: 400px;
+        }
+
+        .chart-container canvas {
+            max-height: 300px !important;
+            height: 300px !important;
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Winner Banner */
+        .winner-banner {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .winner-banner h1 {
+            font-size: 3rem;
+            margin: 1rem 0;
+        }
+
+        /* Method Cards */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .method-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .method-card h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        h1, h2 {
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .card h2 {
+            color: #1e293b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><button onclick="navigateTo('home')" class="nav-btn active" data-page="home">Головна</button></li>
+            <li><button onclick="navigateTo('results')" class="nav-btn" data-page="results">Результати</button></li>
+            <li><button onclick="navigateTo('charts')" class="nav-btn" data-page="charts">Графіки</button></li>
+            <li><button onclick="navigateTo('methodology')" class="nav-btn" data-page="methodology">Методологія</button></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <h1>Cloud Optimization Dashboard</h1>
+            <p style="color: white; font-size: 1.2rem; margin-bottom: 2rem;">
+                Багатокритеріальна оптимізація хмарної інфраструктури AWS
+            </p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalRequests">0</div>
+                    <div class="stat-label">Загальних запитів</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="successRate">0%</div>
+                    <div class="stat-label">Успішність</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="avgResponse">0</div>
+                    <div class="stat-label">мс середній відгук</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="instancesCount">0</div>
+                    <div class="stat-label">Типів інстансів</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Про проект</h2>
+                <p style="line-height: 1.6; color: #475569;">
+                    Це дослідження присвячене вибору оптимальної конфігурації хмарної інфраструктури AWS 
+                    на основі багатокритеріального аналізу. Використовуючи метод TOPSIS, проведено порівняння 
+                    різних типів EC2 інстансів за критеріями продуктивності, вартості та використання ресурсів.
+                </p>
+                <button class="btn" onclick="navigateTo('results')" style="margin-top: 1rem;">
+                    Переглянути результати →
+                </button>
+            </div>
+        </div>
+
+        <!-- Results Page -->
+        <div id="results" class="page">
+            <h1>Результати оптимізації</h1>
+
+            <div class="winner-banner">
+                <div style="font-size: 3rem;">🏆</div>
+                <h1 id="winnerName">-</h1>
+                <p style="font-size: 1.1rem;" id="winnerDetails">-</p>
+            </div>
+
+            <div class="card">
+                <h2>Таблиця результатів TOPSIS</h2>
+                <table id="resultsTable">
+                    <thead>
+                        <tr>
+                            <th>Ранг</th>
+                            <th>Інстанс</th>
+                            <th>TOPSIS Score</th>
+                            <th>RPS</th>
+                            <th>Відгук (мс)</th>
+                            <th>CPU %</th>
+                            <th>RAM %</th>
+                            <th>Вартість</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Charts Page -->
+        <div id="charts" class="page">
+            <h1>Візуалізація даних</h1>
+
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3 class="chart-title">Порівняння продуктивності</h3>
+                    <canvas id="performanceChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">Використання ресурсів</h3>
+                    <canvas id="resourceChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">Метрики в часі (t3.small)</h3>
+                    <canvas id="timelineChart"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <h3 class="chart-title">TOPSIS оцінки</h3>
+                    <canvas id="topsisChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Methodology Page -->
+        <div id="methodology" class="page">
+            <h1>Методологія дослідження</h1>
+
+            <div class="card">
+                <h2>Етапи виконання</h2>
+                <div class="method-grid">
+                    <div class="method-card">
+                        <h3>1. Розгортання інфраструктури</h3>
+                        <p>Використання Terraform для автоматичного створення EC2 інстансів на AWS</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>2. Навантажувальне тестування</h3>
+                        <p>Генерація HTTP запитів з використанням Python та aiohttp</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>3. Збір метрик</h3>
+                        <p>Моніторинг CPU, RAM та часу відгуку під час тестування</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>4. TOPSIS аналіз</h3>
+                        <p>Багатокритеріальна оптимізація для вибору найкращого варіанту</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>5. Візуалізація</h3>
+                        <p>Створення інтерактивних графіків та дашбордів</p>
+                    </div>
+                    <div class="method-card">
+                        <h3>6. Аналіз результатів</h3>
+                        <p>Формування висновків та рекомендацій</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 2rem;">
+                <h2>Критерії оптимізації</h2>
+                <ul style="line-height: 2; color: #475569; margin-left: 2rem;">
+                    <li><strong>Продуктивність:</strong> Кількість запитів на секунду (RPS)</li>
+                    <li><strong>Час відгуку:</strong> Середній час обробки запиту (мс)</li>
+                    <li><strong>Використання CPU:</strong> Відсоток завантаження процесора</li>
+                    <li><strong>Використання RAM:</strong> Відсоток використання оперативної пам'яті</li>
+                    <li><strong>Вартість:</strong> Ціна за годину роботи інстансу ($/год)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Data Storage
+        const appData = {
+            instances: [
+                {
+                    name: 't3.micro',
+                    rps: 80,
+                    avgResponse: 45.00,
+                    cpu: 15.00,
+                    memory: 35.00,
+                    cost: 0.0104,
+                    topsisScore: 0.650
+                },
+                {
+                    name: 't3.small',
+                    rps: 100,
+                    avgResponse: 24.49,
+                    cpu: 0.42,
+                    memory: 20.91,
+                    cost: 0.0208,
+                    topsisScore: 0.820
+                },
+                {
+                    name: 't3.medium',
+                    rps: 150,
+                    avgResponse: 15.00,
+                    cpu: 0.30,
+                    memory: 18.00,
+                    cost: 0.0416,
+                    topsisScore: 0.710
+                }
+            ],
+            timeline: [
+                { time: '0s', cpu: 0, ram: 21.0 },
+                { time: '10s', cpu: 0.5, ram: 21.0 },
+                { time: '20s', cpu: 1.0, ram: 21.1 },
+                { time: '30s', cpu: 1.0, ram: 21.1 },
+                { time: '40s', cpu: 0.5, ram: 21.1 },
+                { time: '50s', cpu: 1.0, ram: 20.6 },
+                { time: '60s', cpu: 0, ram: 20.6 }
+            ],
+            stats: {
+                totalRequests: 6000,
+                successRate: 100,
+                avgResponse: 24.5
+            }
+        };
+
+        // Navigation
+        function navigateTo(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+
+            // Show selected page
+            document.getElementById(pageName).classList.add('active');
+
+            // Update nav buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+
+            // Load page-specific data
+            if (pageName === 'charts') {
+                loadCharts();
+            } else if (pageName === 'results') {
+                loadResults();
+            }
+        }
+
+        // Initialize Home Page
+        function initHomePage() {
+            document.getElementById('totalRequests').textContent = appData.stats.totalRequests.toLocaleString();
+            document.getElementById('successRate').textContent = appData.stats.successRate + '%';
+            document.getElementById('avgResponse').textContent = appData.stats.avgResponse;
+            document.getElementById('instancesCount').textContent = appData.instances.length;
+
+            // Animate numbers
+            animateValue('totalRequests', 0, appData.stats.totalRequests, 1000);
+        }
+
+        // Animate counter
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id);
+            const range = end - start;
+            const increment = end > start ? 1 : -1;
+            const stepTime = Math.abs(Math.floor(duration / range));
+            let current = start;
+
+            const timer = setInterval(() => {
+                current += increment * 10;
+                if (current >= end) {
+                    current = end;
+                    clearInterval(timer);
+                }
+                obj.textContent = current.toLocaleString();
+            }, stepTime);
+        }
+
+        // Load Results
+        function loadResults() {
+            const sorted = [...appData.instances].sort((a, b) => b.topsisScore - a.topsisScore);
+            const winner = sorted[0];
+
+            document.getElementById('winnerName').textContent = winner.name;
+            document.getElementById('winnerDetails').textContent = 
+                `Оцінка: ${winner.topsisScore.toFixed(3)} | CPU: ${winner.cpu}% | RAM: ${winner.memory.toFixed(2)}% | Вартість: $${winner.cost}/год`;
+
+            const tbody = document.getElementById('resultsBody');
+            tbody.innerHTML = '';
+
+            const medals = ['🥇', '🥈', '🥉'];
+            sorted.forEach((inst, idx) => {
+                const row = document.createElement('tr');
+                if (idx === 0) row.classList.add('rank-1');
+                
+                row.innerHTML = `
+                    <td style="font-size: 1.5rem;">${medals[idx]}</td>
+                    <td><strong>${inst.name}</strong></td>
+                    <td><span class="topsis-score">${inst.topsisScore.toFixed(3)}</span></td>
+                    <td>${inst.rps}</td>
+                    <td>${inst.avgResponse.toFixed(2)}</td>
+                    <td>${inst.cpu.toFixed(2)}</td>
+                    <td>${inst.memory.toFixed(2)}</td>
+                    <td>$${inst.cost}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Load Charts
+        let charts = {};
+        function loadCharts() {
+            if (charts.performance) return; // Already loaded
+
+            const chartConfig = {
+                responsive: true,
+                maintainAspectRatio: true,
+                aspectRatio: 2,
+                plugins: {
+                    legend: { labels: { font: { size: 12, weight: '600' } } }
+                }
+            };
+
+            // Performance Chart
+            charts.performance = new Chart(document.getElementById('performanceChart'), {
+                type: 'bar',
+                data: {
+                    labels: appData.instances.map(i => i.name),
+                    datasets: [{
+                        label: 'RPS',
+                        data: appData.instances.map(i => i.rps),
+                        backgroundColor: '#3b82f6'
+                    }, {
+                        label: 'Відгук (мс)',
+                        data: appData.instances.map(i => i.avgResponse),
+                        backgroundColor: '#10b981'
+                    }]
+                },
+                options: chartConfig
+            });
+
+            // Resource Chart
+            charts.resource = new Chart(document.getElementById('resourceChart'), {
+                type: 'bar',
+                data: {
+                    labels: appData.instances.map(i => i.name),
+                    datasets: [{
+                        label: 'CPU %',
+                        data: appData.instances.map(i => i.cpu),
+                        backgroundColor: '#f59e0b'
+                    }, {
+                        label: 'RAM %',
+                        data: appData.instances.map(i => i.memory),
+                        backgroundColor: '#ec4899'
+                    }]
+                },
+                options: chartConfig
+            });
+
+            // Timeline Chart
+            charts.timeline = new Chart(document.getElementById('timelineChart'), {
+                type: 'line',
+                data: {
+                    labels: appData.timeline.map(t => t.time),
+                    datasets: [{
+                        label: 'CPU %',
+                        data: appData.timeline.map(t => t.cpu),
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }, {
+                        label: 'RAM %',
+                        data: appData.timeline.map(t => t.ram),
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: chartConfig
+            });
+
+            // TOPSIS Chart
+            const sorted = [...appData.instances].sort((a, b) => b.topsisScore - a.topsisScore);
+            charts.topsis = new Chart(document.getElementById('topsisChart'), {
+                type: 'bar',
+                data: {
+                    labels: sorted.map(i => i.name),
+                    datasets: [{
+                        label: 'TOPSIS Score',
+                        data: sorted.map(i => i.topsisScore),
+                        backgroundColor: ['#10b981', '#3b82f6', '#8b5cf6']
+                    }]
+                },
+                options: {
+                    ...chartConfig,
+                    scales: {
+                        y: {
+                            min: 0,
+                            max: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        // Load Real Data from API
+        async function loadRealData() {
+            try {
+                // Завантаження всіх даних через API
+                const response = await fetch('/api/data');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: API error`);
+                }
+                const data = await response.json();
+
+                if (!data.success) {
+                    throw new Error('API returned error');
+                }
+
+                // Оновлення даних TOPSIS оптимізації
+                if (data.optimization && data.optimization.results) {
+                    appData.instances = data.optimization.results.map(result => ({
+                        name: result.alternative,
+                        topsisScore: result.score,
+                        rps: result.criteria.performance,
+                        avgResponse: result.criteria.response_time * 1000,
+                        cpu: result.criteria.cpu_usage,
+                        memory: result.criteria.memory_usage,
+                        cost: result.criteria.cost
+                    }));
+                }
+
+                // Оновлення статистики з реальних даних
+                let totalRequests = 0;
+                let totalSuccessful = 0;
+                let responseTimeSum = 0;
+                let responseTimeCount = 0;
+
+                Object.keys(data.instances).forEach(instanceName => {
+                    const instance = data.instances[instanceName];
+                    if (instance.test) {
+                        totalRequests += instance.test.total_requests || 0;
+                        totalSuccessful += instance.test.successful_requests || 0;
+                        responseTimeSum += (instance.test.avg_response_time || 0) * 1000;
+                        responseTimeCount++;
+                    }
+                });
+
+                appData.stats.totalRequests = totalRequests;
+                appData.stats.successRate = totalRequests > 0
+                    ? ((totalSuccessful / totalRequests) * 100).toFixed(0)
+                    : 100;
+                appData.stats.avgResponse = responseTimeCount > 0
+                    ? (responseTimeSum / responseTimeCount).toFixed(1)
+                    : 0;
+
+                // Оновлення timeline з першого доступного інстансу
+                const firstInstance = Object.values(data.instances)[0];
+                if (firstInstance && firstInstance.metrics && firstInstance.metrics.metrics) {
+                    appData.timeline = firstInstance.metrics.metrics.slice(0, 7).map((m, idx) => ({
+                        time: `${idx * 15}s`,
+                        cpu: m.cpu?.percent || 0,
+                        ram: m.memory?.percent || 0
+                    }));
+                }
+
+                console.log('✅ Реальні дані успішно завантажено з API!');
+                console.log('📊 Завантажено інстансів:', appData.instances.length);
+                console.log('🏆 Переможець:', data.optimization?.best_alternative);
+                initHomePage();
+
+            } catch (error) {
+                console.error('❌ Помилка завантаження даних:', error.message);
+                console.warn('⚠️ Використовуються тестові дані');
+                initHomePage();
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', () => {
+            loadRealData();
+        });
+    </script>
+</body>
+</html>
