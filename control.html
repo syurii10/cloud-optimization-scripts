@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Cloud Optimization Control Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 3rem;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-description {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Instance Selection */
+        .instances-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .instance-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .instance-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        }
+
+        .instance-card.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .instance-card input[type="checkbox"] {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .instance-name {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .instance-specs {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .instance-cost {
+            color: #10b981;
+            font-weight: bold;
+            margin-top: 0.5rem;
+        }
+
+        .instance-card.not-free-tier {
+            border-color: #fbbf24;
+        }
+
+        .free-tier-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        .paid-badge {
+            display: inline-block;
+            background: #fbbf24;
+            color: #78350f;
+            padding: 0.2rem 0.5rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
+        /* RPS Selection */
+        .rps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .rps-option {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .rps-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .rps-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .rps-option input[type="checkbox"] {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 18px;
+            height: 18px;
+        }
+
+        .rps-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .rps-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Duration Slider */
+        .duration-control {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .duration-display {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            cursor: pointer;
+            border: none;
+        }
+
+        /* Test Mode */
+        .test-modes {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .test-mode {
+            flex: 1;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .test-mode:hover {
+            border-color: #667eea;
+        }
+
+        .test-mode.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+        }
+
+        .test-mode input[type="radio"] {
+            margin-right: 0.5rem;
+        }
+
+        .mode-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-bottom: 0.5rem;
+        }
+
+        .mode-description {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        /* Summary */
+        .summary {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .summary-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .summary-value.cost {
+            color: #10b981;
+        }
+
+        .summary-value.time {
+            color: #667eea;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 1.2rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn-primary:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f1f5f9;
+        }
+
+        /* Warning Message */
+        .warning {
+            background: #fef3c7;
+            border: 2px solid #fbbf24;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .warning.show {
+            display: block;
+        }
+
+        .warning-title {
+            font-weight: bold;
+            color: #78350f;
+            margin-bottom: 0.5rem;
+        }
+
+        .warning-text {
+            color: #92400e;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <h1>🎮 Cloud Optimization Control Panel</h1>
+        <p class="subtitle">Configure and launch cloud performance tests with TOPSIS optimization</p>
+
+        <!-- Instance Selection -->
+        <div class="section">
+            <div class="section-title">📦 Select EC2 Instances</div>
+            <div class="section-description">Choose which instance types to test and compare</div>
+            <div class="instances-grid">
+                <div class="instance-card" onclick="toggleInstance('t3.micro', this)">
+                    <input type="checkbox" id="inst-micro" checked>
+                    <div class="instance-name">t3.micro</div>
+                    <div class="instance-specs">2 vCPU • 1 GB RAM</div>
+                    <div class="instance-cost">$0.0104/hour</div>
+                    <div class="free-tier-badge">✓ Free Tier</div>
+                </div>
+                <div class="instance-card" onclick="toggleInstance('t3.small', this)">
+                    <input type="checkbox" id="inst-small" checked>
+                    <div class="instance-name">t3.small</div>
+                    <div class="instance-specs">2 vCPU • 2 GB RAM</div>
+                    <div class="instance-cost">$0.0208/hour</div>
+                    <div class="free-tier-badge">✓ Free Tier</div>
+                </div>
+                <div class="instance-card not-free-tier" onclick="toggleInstance('t3.medium', this)">
+                    <input type="checkbox" id="inst-medium" checked>
+                    <div class="instance-name">t3.medium</div>
+                    <div class="instance-specs">2 vCPU • 4 GB RAM</div>
+                    <div class="instance-cost">$0.0416/hour</div>
+                    <div class="paid-badge">⚠ Paid</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RPS Selection -->
+        <div class="section">
+            <div class="section-title">⚡ Select RPS Levels</div>
+            <div class="section-description">Requests per second for load testing</div>
+            <div class="rps-grid">
+                <div class="rps-option" onclick="toggleRPS(500, this)">
+                    <input type="checkbox" id="rps-500" checked>
+                    <div class="rps-value">500</div>
+                    <div class="rps-label">Light Load</div>
+                </div>
+                <div class="rps-option" onclick="toggleRPS(2000, this)">
+                    <input type="checkbox" id="rps-2000" checked>
+                    <div class="rps-value">2000</div>
+                    <div class="rps-label">Medium Load</div>
+                </div>
+                <div class="rps-option" onclick="toggleRPS(5000, this)">
+                    <input type="checkbox" id="rps-5000" checked>
+                    <div class="rps-value">5000</div>
+                    <div class="rps-label">Heavy Load</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Duration -->
+        <div class="section">
+            <div class="section-title">⏱️ Test Duration</div>
+            <div class="section-description">Duration for each individual test</div>
+            <div class="duration-control">
+                <div class="duration-display">
+                    <span id="durationValue">60</span> seconds
+                </div>
+                <input type="range" id="durationSlider" min="30" max="180" value="60" step="10" oninput="updateDuration(this.value)">
+                <div style="display: flex; justify-content: space-between; color: #64748b; font-size: 0.9rem;">
+                    <span>30s</span>
+                    <span>180s</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Mode -->
+        <div class="section">
+            <div class="section-title">🎯 Test Mode</div>
+            <div class="test-modes">
+                <div class="test-mode selected" onclick="selectMode('full', this)">
+                    <input type="radio" name="mode" id="mode-full" checked>
+                    <div class="mode-name">Full Comparison</div>
+                    <div class="mode-description">Test all selected instances with all RPS levels</div>
+                </div>
+                <div class="test-mode" onclick="selectMode('quick', this)">
+                    <input type="radio" name="mode" id="mode-quick">
+                    <div class="mode-name">Quick Test</div>
+                    <div class="mode-description">Test only first selected instance with one RPS level</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="section">
+            <div class="section-title">📊 Test Summary</div>
+            <div class="summary">
+                <div class="summary-item">
+                    <div class="summary-label">Total Tests</div>
+                    <div class="summary-value" id="totalTests">9</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Estimated Time</div>
+                    <div class="summary-value time" id="estimatedTime">~25 min</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label">Estimated Cost</div>
+                    <div class="summary-value cost" id="estimatedCost">$0.12</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Warning for paid instances -->
+        <div class="warning" id="paidWarning">
+            <div class="warning-title">⚠️ Paid Instance Selected</div>
+            <div class="warning-text">
+                t3.medium is not eligible for AWS Free Tier. This will incur charges (~$0.04 for all tests).
+                Make sure you have sufficient AWS credits or budget.
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="button-group">
+            <button class="btn btn-secondary" onclick="window.location.href='/'">
+                📊 View Dashboard
+            </button>
+            <button class="btn btn-primary" id="startBtn" onclick="startTesting()">
+                🚀 START TESTING
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const state = {
+            instances: ['t3.micro', 't3.small', 't3.medium'],
+            rpsLevels: [500, 2000, 5000],
+            duration: 60,
+            mode: 'full'
+        };
+
+        // Toggle instance selection
+        function toggleInstance(instance, card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            card.classList.toggle('selected');
+
+            if (checkbox.checked) {
+                state.instances.push(instance);
+            } else {
+                state.instances = state.instances.filter(i => i !== instance);
+            }
+
+            updateSummary();
+        }
+
+        // Toggle RPS selection
+        function toggleRPS(rps, card) {
+            const checkbox = card.querySelector('input[type="checkbox"]');
+            checkbox.checked = !checkbox.checked;
+            card.classList.toggle('selected');
+
+            if (checkbox.checked) {
+                state.rpsLevels.push(rps);
+            } else {
+                state.rpsLevels = state.rpsLevels.filter(r => r !== rps);
+            }
+
+            updateSummary();
+        }
+
+        // Update duration
+        function updateDuration(value) {
+            state.duration = parseInt(value);
+            document.getElementById('durationValue').textContent = value;
+            updateSummary();
+        }
+
+        // Select test mode
+        function selectMode(mode, card) {
+            document.querySelectorAll('.test-mode').forEach(m => m.classList.remove('selected'));
+            card.classList.add('selected');
+            document.getElementById(`mode-${mode}`).checked = true;
+            state.mode = mode;
+            updateSummary();
+        }
+
+        // Update summary
+        function updateSummary() {
+            const totalTests = state.mode === 'full'
+                ? state.instances.length * state.rpsLevels.length
+                : 1;
+
+            // Estimate time: ~2-3 min per test
+            const estimatedMinutes = Math.ceil(totalTests * 2.5);
+
+            // Estimate cost: $0.0104 (micro) + $0.0208 (small) + $0.0416 (medium) per hour
+            // Each test is ~2.5 min = 0.042 hours
+            const hourlyRate = {
+                't3.micro': 0.0104,
+                't3.small': 0.0208,
+                't3.medium': 0.0416
+            };
+
+            let totalCost = 0;
+            if (state.mode === 'full') {
+                state.instances.forEach(inst => {
+                    totalCost += hourlyRate[inst] * state.rpsLevels.length * (state.duration / 3600);
+                });
+            } else {
+                totalCost = hourlyRate[state.instances[0]] * (state.duration / 3600);
+            }
+
+            document.getElementById('totalTests').textContent = totalTests;
+            document.getElementById('estimatedTime').textContent = `~${estimatedMinutes} min`;
+            document.getElementById('estimatedCost').textContent = `$${totalCost.toFixed(4)}`;
+
+            // Show warning if t3.medium is selected
+            const mediumSelected = state.instances.includes('t3.medium');
+            document.getElementById('paidWarning').classList.toggle('show', mediumSelected);
+
+            // Enable/disable start button
+            const canStart = state.instances.length > 0 && state.rpsLevels.length > 0;
+            document.getElementById('startBtn').disabled = !canStart;
+        }
+
+        // Start testing
+        async function startTesting() {
+            const btn = document.getElementById('startBtn');
+            btn.disabled = true;
+            btn.innerHTML = '⏳ Starting...';
+
+            try {
+                const response = await fetch('/api/start-test', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(state)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert('✅ Testing started! Redirecting to dashboard...');
+                    window.location.href = '/';
+                } else {
+                    throw new Error('Failed to start testing');
+                }
+            } catch (error) {
+                alert('❌ Error starting tests: ' + error.message);
+                btn.disabled = false;
+                btn.innerHTML = '🚀 START TESTING';
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateSummary();
+            // Mark initial selections
+            document.querySelectorAll('.instance-card input:checked').forEach(cb => {
+                cb.parentElement.classList.add('selected');
+            });
+            document.querySelectorAll('.rps-option input:checked').forEach(cb => {
+                cb.parentElement.classList.add('selected');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,12 +1,17 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { spawn } = require('child_process');
 
 const app = express();
 const PORT = 8080;
 
-// Middleware для статичних файлів
+// Middleware
 app.use(express.static(__dirname));
+app.use(express.json()); // Для парсингу JSON в POST запитах
+
+// Глобальна змінна для відстеження активного тесту
+let activeTest = null;
 
 // API endpoint для отримання всіх даних
 app.get('/api/data', (req, res) => {
@@ -51,9 +56,99 @@ app.get('/api/data', (req, res) => {
     }
 });
 
-// Головна сторінка
+// Control Panel
+app.get('/control', (req, res) => {
+    res.sendFile(path.join(__dirname, 'control.html'));
+});
+
+// Dashboard (головна сторінка)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// API endpoint для запуску тестів
+app.post('/api/start-test', (req, res) => {
+    try {
+        const config = req.body;
+        console.log('🚀 Запуск тестування з конфігурацією:', config);
+
+        // Перевірка чи немає активного тесту
+        if (activeTest && activeTest.running) {
+            return res.status(400).json({
+                success: false,
+                error: 'Test already running'
+            });
+        }
+
+        // Створюємо конфігураційний файл для orchestrator
+        const testConfig = {
+            instances: config.instances,
+            rps_levels: config.rpsLevels,
+            test_duration: config.duration,
+            mode: config.mode,
+            timestamp: new Date().toISOString()
+        };
+
+        fs.writeFileSync('test_config.json', JSON.stringify(testConfig, null, 2));
+
+        // Запускаємо orchestrator в фоновому режимі
+        const pythonProcess = spawn('py', ['orchestrator.py'], {
+            detached: false,
+            stdio: ['ignore', 'pipe', 'pipe']
+        });
+
+        activeTest = {
+            running: true,
+            pid: pythonProcess.pid,
+            startTime: Date.now(),
+            config: testConfig
+        };
+
+        // Логування виводу
+        pythonProcess.stdout.on('data', (data) => {
+            console.log(`[Orchestrator] ${data.toString().trim()}`);
+        });
+
+        pythonProcess.stderr.on('data', (data) => {
+            console.error(`[Orchestrator Error] ${data.toString().trim()}`);
+        });
+
+        pythonProcess.on('close', (code) => {
+            console.log(`✅ Orchestrator завершено з кодом ${code}`);
+            activeTest.running = false;
+        });
+
+        res.json({
+            success: true,
+            message: 'Testing started',
+            testId: activeTest.pid,
+            config: testConfig
+        });
+
+    } catch (error) {
+        console.error('❌ Помилка запуску тестів:', error.message);
+        res.status(500).json({
+            success: false,
+            error: error.message
+        });
+    }
+});
+
+// API endpoint для статусу тесту
+app.get('/api/test-status', (req, res) => {
+    if (!activeTest) {
+        return res.json({
+            running: false,
+            message: 'No tests running'
+        });
+    }
+
+    res.json({
+        running: activeTest.running,
+        startTime: activeTest.startTime,
+        elapsed: Math.floor((Date.now() - activeTest.startTime) / 1000),
+        config: activeTest.config
+    });
 });
 
 // Запуск сервера
@@ -65,8 +160,11 @@ app.listen(PORT, () => {
     console.log(`🚀 Сервер запущено на http://localhost:${PORT}`);
     console.log('');
     console.log('📊 Доступні маршрути:');
-    console.log(`   • Головна:     http://localhost:${PORT}`);
-    console.log(`   • API дані:    http://localhost:${PORT}/api/data`);
+    console.log(`   • Dashboard:        http://localhost:${PORT}`);
+    console.log(`   • Control Panel:    http://localhost:${PORT}/control`);
+    console.log(`   • API дані:         http://localhost:${PORT}/api/data`);
+    console.log(`   • API запуск:       http://localhost:${PORT}/api/start-test`);
+    console.log(`   • API статус:       http://localhost:${PORT}/api/test-status`);
     console.log('');
     console.log('💡 Натисни Ctrl+C для зупинки сервера');
     console.log('');

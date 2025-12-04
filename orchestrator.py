@@ -13,16 +13,25 @@ from pathlib import Path
 import boto3
 
 class CloudOrchestrator:
-    def __init__(self):
+    def __init__(self, config_file=None):
         self.terraform_dir = Path("terraform")
         self.results_dir = Path("results")
         self.results_dir.mkdir(exist_ok=True)
 
-        # Розширена конфігурація для магістерської роботи
-        # Запускаємо всі 3 типи інстансів з новими RPS рівнями
-        self.instance_types = ['t3.micro', 't3.small', 't3.medium']
-        self.rps_levels = [500, 2000, 5000]  # Різні навантаження
-        self.test_duration = 60  # секунд
+        # Завантаження конфігурації з файлу або використання default
+        if config_file and Path(config_file).exists():
+            self.log(f"Завантаження конфігурації з {config_file}...", "INFO")
+            config = self.load_config(config_file)
+            self.instance_types = config.get('instances', ['t3.micro', 't3.small', 't3.medium'])
+            self.rps_levels = config.get('rps_levels', [500, 2000, 5000])
+            self.test_duration = config.get('test_duration', 60)
+            self.test_mode = config.get('mode', 'full')
+        else:
+            # Default конфігурація для магістерської роботи
+            self.instance_types = ['t3.micro', 't3.small', 't3.medium']
+            self.rps_levels = [500, 2000, 5000]
+            self.test_duration = 60
+            self.test_mode = 'full'
 
         self.results = []
 
@@ -49,6 +58,23 @@ class CloudOrchestrator:
             # Замінюємо невалідні символи для Windows консолі
             safe_message = message.encode('ascii', 'replace').decode('ascii')
             print(f"[{timestamp}] {symbols.get(level, '[INFO]')} {safe_message}")
+
+    def load_config(self, config_file):
+        """Завантаження конфігурації з JSON файлу"""
+        try:
+            with open(config_file, 'r') as f:
+                config = json.load(f)
+
+            self.log(f"Конфігурація завантажена:", "SUCCESS")
+            self.log(f"  Instances: {config.get('instances', [])}", "INFO")
+            self.log(f"  RPS Levels: {config.get('rps_levels', [])}", "INFO")
+            self.log(f"  Duration: {config.get('test_duration', 60)}s", "INFO")
+            self.log(f"  Mode: {config.get('mode', 'full')}", "INFO")
+
+            return config
+        except Exception as e:
+            self.log(f"Помилка завантаження конфігурації: {e}", "ERROR")
+            return {}
     
     def run_command(self, command, cwd=None):
         """Виконання shell команди"""
@@ -571,7 +597,9 @@ def main():
     ========================================================
     """)
 
-    orchestrator = CloudOrchestrator()
+    # Перевірка чи є конфігураційний файл від Control Panel
+    config_file = "test_config.json"
+    orchestrator = CloudOrchestrator(config_file if Path(config_file).exists() else None)
 
     try:
         orchestrator.run_full_test_suite()
