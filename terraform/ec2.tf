@@ -25,24 +25,37 @@ resource "aws_instance" "target_server" {
   user_data = <<-EOF
               #!/bin/bash
               apt-get update
-              apt-get install -y python3-pip git nginx
-              
-              # Налаштування простого веб-сервера
-              systemctl start nginx
-              systemctl enable nginx
-              
-              # Створюємо тестову сторінку
-              echo "Server is running. Instance type: ${var.target_server_instance_type}" > /var/www/html/index.html
-              
+              apt-get install -y python3-pip git python3-psutil
+
               # Клонуємо репозиторій зі скриптами
               cd /home/ubuntu
               git clone ${var.github_repo} scripts
               cd scripts
-              
-              # Встановлюємо залежності
-              apt-get install -y python3-psutil
-              
+
               chown -R ubuntu:ubuntu /home/ubuntu/scripts
+
+              # Запускаємо CPU-intensive сервер як systemd service
+              cat > /etc/systemd/system/cpu-server.service <<'SERVICE'
+[Unit]
+Description=CPU-Intensive HTTP Server
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/scripts
+ExecStart=/usr/bin/python3 /home/ubuntu/scripts/scripts/cpu_intensive_server.py 80
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+SERVICE
+
+              # Запускаємо сервіс
+              systemctl daemon-reload
+              systemctl enable cpu-server
+              systemctl start cpu-server
               EOF
 
   tags = {
@@ -101,13 +114,37 @@ resource "aws_instance" "comparison_servers" {
   user_data = <<-EOF
               #!/bin/bash
               apt-get update
-              apt-get install -y python3-pip nginx
-              systemctl start nginx
-              systemctl enable nginx
-              
-              echo "Comparison server - Type: ${var.instance_types[count.index]}" > /var/www/html/index.html
-              
-              pip3 install flask psutil boto3
+              apt-get install -y python3-pip git python3-psutil
+
+              # Клонуємо репозиторій зі скриптами
+              cd /home/ubuntu
+              git clone ${var.github_repo} scripts
+              cd scripts
+
+              chown -R ubuntu:ubuntu /home/ubuntu/scripts
+
+              # Запускаємо CPU-intensive сервер як systemd service
+              cat > /etc/systemd/system/cpu-server.service <<'SERVICE'
+[Unit]
+Description=CPU-Intensive HTTP Server
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/scripts
+ExecStart=/usr/bin/python3 /home/ubuntu/scripts/scripts/cpu_intensive_server.py 80
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
+SERVICE
+
+              # Запускаємо сервіс
+              systemctl daemon-reload
+              systemctl enable cpu-server
+              systemctl start cpu-server
               EOF
 
   tags = {
