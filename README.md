@@ -2,10 +2,13 @@
 
 > Магістерська робота: Багатокритеріальна оптимізація хмарної інфраструктури AWS з використанням методу TOPSIS
 
-[![AWS](https://img.shields.io/badge/AWS-EC2-orange)](https://aws.amazon.com/)
-[![Terraform](https://img.shields.io/badge/IaC-Terraform-purple)](https://www.terraform.io/)
-[![Python](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![AWS](https://img.shields.io/badge/AWS-EC2-FF9900?logo=amazon-aws)](https://aws.amazon.com/)
+[![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?logo=terraform)](https://www.terraform.io/)
+[![Python](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![TOPSIS](https://img.shields.io/badge/Method-TOPSIS-blue)](https://en.wikipedia.org/wiki/TOPSIS)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-success)](https://github.com/syurii10/cloud-optimization-project)
+[![Master Thesis](https://img.shields.io/badge/Type-Master's%20Thesis-informational)](https://github.com/syurii10/cloud-optimization-project)
 
 ## 📋 Зміст
 
@@ -43,43 +46,54 @@
 - 📝 **Детальні звіти** та експорт результатів
 
 ### Наукові можливості (NEW!)
-- 🔬 **Sensitivity Analysis** - аналіз чутливості до зміни ваг
-- 📊 **Method Comparison** - TOPSIS vs SAW vs WPM
+- 🔬 **Sensitivity Analysis** - аналіз чутливості до зміни ваг (5% до 70%)
+- 📊 **Method Comparison** - TOPSIS vs SAW vs WPM (Kendall Tau = 1.0)
 - 💰 **Cost Prediction** - прогнозування вартості AWS
-- 📄 **PDF Report Generator** - автоматична генерація звітів
-- 🎖️ **Military Use Cases** - військові сценарії застосування
+- 📄 **Report Generator** - автоматична генерація Markdown звітів
+- 📈 **6 Professional Visualizations** - графіки 300 DPI для презентації
+- 🌐 **Live Dashboard** - web-інтерфейс з real-time оновленням
+- 🎖️ **Military Use Cases** - Delta, Aeneas, Cyber Defense, Logistix
+- 🏆 **Competitive Analysis** - порівняння з AWS Cost Explorer, CloudHealth, Spot.io
 
 ## 🏗️ Архітектура
 
+**Детальна архітектура:** [ARCHITECTURE.md](docs/ARCHITECTURE.md) | [ARCHITECTURE_DIAGRAM.md](docs/ARCHITECTURE_DIAGRAM.md)
+
 ```
-┌─────────────────────────────────────────────────────────┐
-│                   GitHub Repository                      │
-│            cloud-optimization-scripts.git                │
-└─────────────────────────────────────────────────────────┘
-                         │ git clone
-                         ↓
-┌─────────────────────────────────────────────────────────┐
-│               AWS Infrastructure (Terraform)             │
-│                                                          │
-│  ┌──────────────────┐      ┌──────────────────┐        │
-│  │  Client Server   │ ───> │  Target Server   │        │
-│  │   (t3.micro)     │ HTTP │   (t3.small)     │        │
-│  │  Генерує RPS     │      │  Приймає запити  │        │
-│  └──────────────────┘      └──────────────────┘        │
-│                                                          │
-│  ┌──────────────────┬──────────────────┐               │
-│  │ Comparison #1    │ Comparison #2     │               │
-│  │  (t3.micro)      │  (t3.medium)      │               │
-│  └──────────────────┴──────────────────┘               │
-└─────────────────────────────────────────────────────────┘
-                         │
-                         ↓
-┌─────────────────────────────────────────────────────────┐
-│              TOPSIS Optimization Engine                  │
-│  • Performance (35%)    • Response Time (25%)           │
-│  • CPU Usage (15%)      • Memory Usage (15%)            │
-│  • Cost (10%)                                           │
-└─────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────────┐
+│                        КОРИСТУВАЧ (DevOps)                          │
+└────────────────────────────┬────────────────────────────────────────┘
+                             │
+                ┌────────────┴────────────┐
+                │                         │
+        ┌───────▼────────┐       ┌───────▼────────┐
+        │ Control Panel  │       │ Live Dashboard │
+        │  (Interactive) │       │   (HTTP:8080)  │
+        └───────┬────────┘       └───────▲────────┘
+                │                        │
+┌───────────────▼────────────────────────┴─────────────────────────────┐
+│                    CORE OPTIMIZATION ENGINE                          │
+│                                                                      │
+│  [Data Collection] → [TOPSIS Analysis] → [Reporting]                │
+│                                                                      │
+│  • Request Simulator    • TOPSIS Optimizer     • Visualizer (6)     │
+│  • Metrics Collector    • Sensitivity Analyzer • Report Generator   │
+│                        • Method Comparator     • Cost Predictor     │
+└──────────────────────────────┬───────────────────────────────────────┘
+                               │
+┌──────────────────────────────▼───────────────────────────────────────┐
+│                      AWS INFRASTRUCTURE (Terraform)                  │
+│                                                                      │
+│  ┌────────────────┐   ┌────────────────┐   ┌────────────────┐      │
+│  │   t3.micro     │   │   t3.small     │   │   t3.medium    │      │
+│  │  1 vCPU, 1GB   │   │  2 vCPU, 2GB   │   │  2 vCPU, 4GB   │      │
+│  └────────┬───────┘   └────────┬───────┘   └────────┬───────┘      │
+│           └────────────────────┼────────────────────┘               │
+│                    ┌───────────▼───────────┐                        │
+│                    │  CPU-Intensive Server │                        │
+│                    │     (Flask on :80)    │                        │
+│                    └───────────────────────┘                        │
+└──────────────────────────────────────────────────────────────────────┘
 ```
 
 ## 📦 Вимоги
