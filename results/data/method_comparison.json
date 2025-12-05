@@ -1,0 +1,183 @@
+{
+  "methods": {
+    "TOPSIS": {
+      "method": "TOPSIS",
+      "criteria_weights": {
+        "performance": 0.35,
+        "response_time": 0.25,
+        "cpu_usage": 0.15,
+        "memory_usage": 0.15,
+        "cost": 0.1
+      },
+      "results": [
+        {
+          "alternative": "t3.medium",
+          "score": 0.8173002001879004,
+          "rank": 1,
+          "criteria": {
+            "performance": 600,
+            "response_time": 0.02,
+            "cpu_usage": 20,
+            "memory_usage": 20,
+            "cost": 0.0416
+          }
+        },
+        {
+          "alternative": "t3.small",
+          "score": 0.4721105956851581,
+          "rank": 2,
+          "criteria": {
+            "performance": 300,
+            "response_time": 0.04,
+            "cpu_usage": 30,
+            "memory_usage": 25,
+            "cost": 0.0208
+          }
+        },
+        {
+          "alternative": "t3.micro",
+          "score": 0.1826997998120997,
+          "rank": 3,
+          "criteria": {
+            "performance": 150,
+            "response_time": 0.08,
+            "cpu_usage": 45,
+            "memory_usage": 35,
+            "cost": 0.0104
+          }
+        }
+      ],
+      "best_alternative": "t3.medium"
+    },
+    "SAW": {
+      "method": "SAW",
+      "criteria_weights": {
+        "performance": 0.35,
+        "response_time": 0.25,
+        "cpu_usage": 0.15,
+        "memory_usage": 0.15,
+        "cost": 0.1
+      },
+      "results": [
+        {
+          "alternative": "t3.medium",
+          "score": 0.925,
+          "rank": 1,
+          "criteria": {
+            "performance": 600,
+            "response_time": 0.02,
+            "cpu_usage": 20,
+            "memory_usage": 20,
+            "cost": 0.0416
+          }
+        },
+        {
+          "alternative": "t3.small",
+          "score": 0.5700000000000001,
+          "rank": 2,
+          "criteria": {
+            "performance": 300,
+            "response_time": 0.04,
+            "cpu_usage": 30,
+            "memory_usage": 25,
+            "cost": 0.0208
+          }
+        },
+        {
+          "alternative": "t3.micro",
+          "score": 0.4023809523809524,
+          "rank": 3,
+          "criteria": {
+            "performance": 150,
+            "response_time": 0.08,
+            "cpu_usage": 45,
+            "memory_usage": 35,
+            "cost": 0.0104
+          }
+        }
+      ],
+      "best_alternative": "t3.medium"
+    },
+    "WPM": {
+      "method": "WPM",
+      "criteria_weights": {
+        "performance": 0.35,
+        "response_time": 0.25,
+        "cpu_usage": 0.15,
+        "memory_usage": 0.15,
+        "cost": 0.1
+      },
+      "results": [
+        {
+          "alternative": "t3.medium",
+          "score": 13.93896949470569,
+          "rank": 1,
+          "criteria": {
+            "performance": 600,
+            "response_time": 0.02,
+            "cpu_usage": 20,
+            "memory_usage": 20,
+            "cost": 0.0416
+          }
+        },
+        {
+          "alternative": "t3.small",
+          "score": 8.972883935038455,
+          "rank": 2,
+          "criteria": {
+            "performance": 300,
+            "response_time": 0.04,
+            "cpu_usage": 30,
+            "memory_usage": 25,
+            "cost": 0.0208
+          }
+        },
+        {
+          "alternative": "t3.micro",
+          "score": 5.67560897936677,
+          "rank": 3,
+          "criteria": {
+            "performance": 150,
+            "response_time": 0.08,
+            "cpu_usage": 45,
+            "memory_usage": 35,
+            "cost": 0.0104
+          }
+        }
+      ],
+      "best_alternative": "t3.medium"
+    }
+  },
+  "ranking_comparison": {
+    "t3.micro": {
+      "TOPSIS": 3,
+      "SAW": 3,
+      "WPM": 3
+    },
+    "t3.small": {
+      "TOPSIS": 2,
+      "SAW": 2,
+      "WPM": 2
+    },
+    "t3.medium": {
+      "TOPSIS": 1,
+      "SAW": 1,
+      "WPM": 1
+    }
+  },
+  "consensus": {
+    "unanimous_leader": true,
+    "leaders": {
+      "TOPSIS": "t3.medium",
+      "SAW": "t3.medium",
+      "WPM": "t3.medium"
+    },
+    "rank_correlations": {
+      "TOPSIS_vs_SAW": 1.0,
+      "TOPSIS_vs_WPM": 1.0,
+      "SAW_vs_WPM": 1.0
+    },
+    "average_correlation": 1.0,
+    "consensus_level": "високий"
+  }
+}

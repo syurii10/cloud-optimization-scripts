@@ -1,0 +1,12 @@
+{
+  "timestamp": "2025-12-02T10:10:57.939161",
+  "target_url": "http://10.0.1.171",
+  "rps": 150,
+  "duration": 60,
+  "total_requests": 9000,
+  "successful_requests": 9000,
+  "failed_requests": 0,
+  "avg_response_time": 0.03850590411822001,
+  "min_response_time": 0.02060675621032715,
+  "max_response_time": 0.3717930316925049
+}

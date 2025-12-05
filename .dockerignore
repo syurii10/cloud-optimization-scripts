@@ -1,0 +1,57 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info
+
+# Node
+node_modules
+npm-debug.log
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs and results
+*.log
+logs/
+results/
+*.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# AWS & Secrets
+*.pem
+*.key
+.env
+credentials.json
+
+# Documentation
+README.md
+LICENSE
+docs/
+
+# Tests
+tests/
+*.pytest_cache
+.coverage
+htmlcov/

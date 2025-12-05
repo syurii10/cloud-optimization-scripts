@@ -44,7 +44,7 @@ After=network.target
 Type=simple
 User=ubuntu
 WorkingDirectory=/home/ubuntu/scripts
-ExecStart=/usr/bin/python3 /home/ubuntu/scripts/scripts/cpu_intensive_server.py 80
+ExecStart=/usr/bin/python3 /home/ubuntu/scripts/cpu_intensive_server.py 80
 Restart=always
 RestartSec=3
 
@@ -133,7 +133,7 @@ After=network.target
 Type=simple
 User=ubuntu
 WorkingDirectory=/home/ubuntu/scripts
-ExecStart=/usr/bin/python3 /home/ubuntu/scripts/scripts/cpu_intensive_server.py 80
+ExecStart=/usr/bin/python3 /home/ubuntu/scripts/cpu_intensive_server.py 80
 Restart=always
 RestartSec=3
 

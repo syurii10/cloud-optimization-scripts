@@ -277,7 +277,7 @@ class SensitivityAnalyzer:
             for criterion, breakpoints in all_breakpoints.items():
                 print(f"\n{criterion}:")
                 for bp in breakpoints:
-                    print(f"  Вага {bp['weight']:.3f}: {bp['previous_leader']} → {bp['new_leader']}")
+                    print(f"  Vaha {bp['weight']:.3f}: {bp['previous_leader']} -> {bp['new_leader']}")
 
         return output
 

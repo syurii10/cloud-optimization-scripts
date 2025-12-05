@@ -1,0 +1,1136 @@
+{
+  "collection_info": {
+    "interval": 1,
+    "duration": 90,
+    "samples_count": 45,
+    "start_time": "2025-12-03T14:04:31.234063",
+    "end_time": "2025-12-03T14:05:59.362791"
+  },
+  "metrics": [
+    {
+      "timestamp": "2025-12-03T14:04:31.234063",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538017792,
+        "percent": 43.9,
+        "used": 240193536
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315573,
+        "bytes_recv": 126770865,
+        "packets_sent": 3581,
+        "packets_recv": 86082
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:33.236944",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538021888,
+        "percent": 43.9,
+        "used": 240193536
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315615,
+        "bytes_recv": 126770893,
+        "packets_sent": 3582,
+        "packets_recv": 86083
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:35.239794",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538021888,
+        "percent": 43.9,
+        "used": 240185344
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315705,
+        "bytes_recv": 126770969,
+        "packets_sent": 3583,
+        "packets_recv": 86084
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:37.242731",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538030080,
+        "percent": 43.9,
+        "used": 240185344
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315705,
+        "bytes_recv": 126770969,
+        "packets_sent": 3583,
+        "packets_recv": 86084
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:39.245767",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538030080,
+        "percent": 43.9,
+        "used": 240185344
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315705,
+        "bytes_recv": 126770969,
+        "packets_sent": 3583,
+        "packets_recv": 86084
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:41.248733",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538030080,
+        "percent": 43.9,
+        "used": 240177152
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315705,
+        "bytes_recv": 126770969,
+        "packets_sent": 3583,
+        "packets_recv": 86084
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:43.251745",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538030080,
+        "percent": 43.9,
+        "used": 240177152
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315705,
+        "bytes_recv": 126770969,
+        "packets_sent": 3583,
+        "packets_recv": 86084
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:45.254640",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538030080,
+        "percent": 43.9,
+        "used": 240177152
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315705,
+        "bytes_recv": 126770969,
+        "packets_sent": 3583,
+        "packets_recv": 86084
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:47.257516",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538030080,
+        "percent": 43.9,
+        "used": 240177152
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 315795,
+        "bytes_recv": 126771045,
+        "packets_sent": 3584,
+        "packets_recv": 86085
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:49.260427",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538046464,
+        "percent": 43.9,
+        "used": 240168960
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316245,
+        "bytes_recv": 126771425,
+        "packets_sent": 3589,
+        "packets_recv": 86090
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:51.263417",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538046464,
+        "percent": 43.9,
+        "used": 240168960
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316515,
+        "bytes_recv": 126771653,
+        "packets_sent": 3592,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:53.266316",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538046464,
+        "percent": 43.9,
+        "used": 240168960
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316585,
+        "bytes_recv": 126771653,
+        "packets_sent": 3593,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:55.269202",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538046464,
+        "percent": 43.9,
+        "used": 240160768
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316585,
+        "bytes_recv": 126771653,
+        "packets_sent": 3593,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:57.272085",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538046464,
+        "percent": 43.9,
+        "used": 240160768
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316585,
+        "bytes_recv": 126771653,
+        "packets_sent": 3593,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:04:59.275129",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538046464,
+        "percent": 43.9,
+        "used": 240160768
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316585,
+        "bytes_recv": 126771653,
+        "packets_sent": 3593,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:01.278264",
+      "cpu": {
+        "percent": 0.5,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538058752,
+        "percent": 43.9,
+        "used": 240156672
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316585,
+        "bytes_recv": 126771653,
+        "packets_sent": 3593,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:03.281170",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538058752,
+        "percent": 43.9,
+        "used": 240156672
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316585,
+        "bytes_recv": 126771653,
+        "packets_sent": 3593,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:05.284244",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538058752,
+        "percent": 43.9,
+        "used": 240156672
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316585,
+        "bytes_recv": 126771653,
+        "packets_sent": 3593,
+        "packets_recv": 86093
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:07.287326",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538062848,
+        "percent": 43.9,
+        "used": 240152576
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316675,
+        "bytes_recv": 126771729,
+        "packets_sent": 3594,
+        "packets_recv": 86094
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:09.289436",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538062848,
+        "percent": 43.9,
+        "used": 240152576
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316675,
+        "bytes_recv": 126771729,
+        "packets_sent": 3594,
+        "packets_recv": 86094
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:11.292332",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538062848,
+        "percent": 43.9,
+        "used": 240152576
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316675,
+        "bytes_recv": 126771729,
+        "packets_sent": 3594,
+        "packets_recv": 86094
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:13.295392",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538062848,
+        "percent": 43.9,
+        "used": 240152576
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316717,
+        "bytes_recv": 126771757,
+        "packets_sent": 3595,
+        "packets_recv": 86095
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:15.298271",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538062848,
+        "percent": 43.9,
+        "used": 240144384
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316717,
+        "bytes_recv": 126771757,
+        "packets_sent": 3595,
+        "packets_recv": 86095
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:17.301165",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538079232,
+        "percent": 43.9,
+        "used": 240136192
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316717,
+        "bytes_recv": 126771757,
+        "packets_sent": 3595,
+        "packets_recv": 86095
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:19.304056",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538079232,
+        "percent": 43.9,
+        "used": 240136192
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316717,
+        "bytes_recv": 126771757,
+        "packets_sent": 3595,
+        "packets_recv": 86095
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:21.307076",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538079232,
+        "percent": 43.9,
+        "used": 240136192
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316717,
+        "bytes_recv": 126771757,
+        "packets_sent": 3595,
+        "packets_recv": 86095
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:23.310036",
+      "cpu": {
+        "percent": 6.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538759168,
+        "percent": 43.8,
+        "used": 239435776
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447785984,
+        "free": 5667610624,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316807,
+        "bytes_recv": 126771833,
+        "packets_sent": 3596,
+        "packets_recv": 86096
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:25.312938",
+      "cpu": {
+        "percent": 4.5,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538845184,
+        "percent": 43.8,
+        "used": 239333376
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316807,
+        "bytes_recv": 126771833,
+        "packets_sent": 3596,
+        "packets_recv": 86096
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:27.315777",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538845184,
+        "percent": 43.8,
+        "used": 239333376
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316807,
+        "bytes_recv": 126771833,
+        "packets_sent": 3596,
+        "packets_recv": 86096
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:29.318670",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538845184,
+        "percent": 43.8,
+        "used": 239329280
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316807,
+        "bytes_recv": 126771833,
+        "packets_sent": 3596,
+        "packets_recv": 86096
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:31.321566",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538853376,
+        "percent": 43.8,
+        "used": 239329280
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316807,
+        "bytes_recv": 126771833,
+        "packets_sent": 3596,
+        "packets_recv": 86096
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:33.324630",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538853376,
+        "percent": 43.8,
+        "used": 239329280
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316849,
+        "bytes_recv": 126771861,
+        "packets_sent": 3597,
+        "packets_recv": 86097
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:35.327549",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538853376,
+        "percent": 43.8,
+        "used": 239325184
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316849,
+        "bytes_recv": 126771861,
+        "packets_sent": 3597,
+        "packets_recv": 86097
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:37.330446",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538857472,
+        "percent": 43.8,
+        "used": 239325184
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316849,
+        "bytes_recv": 126771861,
+        "packets_sent": 3597,
+        "packets_recv": 86097
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:39.333330",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538857472,
+        "percent": 43.8,
+        "used": 239325184
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447806464,
+        "free": 5667590144,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316939,
+        "bytes_recv": 126771937,
+        "packets_sent": 3598,
+        "packets_recv": 86098
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:41.336242",
+      "cpu": {
+        "percent": 0.5,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538857472,
+        "percent": 43.8,
+        "used": 239321088
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447810560,
+        "free": 5667586048,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316993,
+        "bytes_recv": 126771983,
+        "packets_sent": 3599,
+        "packets_recv": 86099
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:43.339311",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538861568,
+        "percent": 43.8,
+        "used": 239312896
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447810560,
+        "free": 5667586048,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316993,
+        "bytes_recv": 126771983,
+        "packets_sent": 3599,
+        "packets_recv": 86099
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:45.342197",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538861568,
+        "percent": 43.8,
+        "used": 239312896
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447810560,
+        "free": 5667586048,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316993,
+        "bytes_recv": 126771983,
+        "packets_sent": 3599,
+        "packets_recv": 86099
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:47.345129",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538861568,
+        "percent": 43.8,
+        "used": 239312896
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447810560,
+        "free": 5667586048,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316993,
+        "bytes_recv": 126771983,
+        "packets_sent": 3599,
+        "packets_recv": 86099
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:49.348047",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538861568,
+        "percent": 43.8,
+        "used": 239304704
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447810560,
+        "free": 5667586048,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 316993,
+        "bytes_recv": 126771983,
+        "packets_sent": 3599,
+        "packets_recv": 86099
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:51.351170",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538861568,
+        "percent": 43.8,
+        "used": 239304704
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447810560,
+        "free": 5667586048,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 317083,
+        "bytes_recv": 126771983,
+        "packets_sent": 3600,
+        "packets_recv": 86099
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:53.354107",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538861568,
+        "percent": 43.8,
+        "used": 239304704
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447810560,
+        "free": 5667586048,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 317443,
+        "bytes_recv": 126772363,
+        "packets_sent": 3604,
+        "packets_recv": 86104
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:55.356979",
+      "cpu": {
+        "percent": 1.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538882048,
+        "percent": 43.8,
+        "used": 239296512
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447794176,
+        "free": 5667602432,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 317713,
+        "bytes_recv": 126772591,
+        "packets_sent": 3607,
+        "packets_recv": 86107
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:57.359859",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538882048,
+        "percent": 43.8,
+        "used": 239296512
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447794176,
+        "free": 5667602432,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 317845,
+        "bytes_recv": 126772619,
+        "packets_sent": 3609,
+        "packets_recv": 86108
+      }
+    },
+    {
+      "timestamp": "2025-12-03T14:05:59.362791",
+      "cpu": {
+        "percent": 0.0,
+        "count": 2
+      },
+      "memory": {
+        "total": 958431232,
+        "available": 538882048,
+        "percent": 43.8,
+        "used": 239296512
+      },
+      "disk": {
+        "total": 8132173824,
+        "used": 2447794176,
+        "free": 5667602432,
+        "percent": 30.2
+      },
+      "network": {
+        "bytes_sent": 317845,
+        "bytes_recv": 126772619,
+        "packets_sent": 3609,
+        "packets_recv": 86108
+      }
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "configuration": {
+    "instances": [
+      "t3.micro",
+      "t3.small",
+      "t3.medium"
+    ],
+    "rps_levels": [
+      500,
+      2000,
+      5000
+    ],
+    "test_duration": 60,
+    "data_transfer_per_test_gb": 0.1
+  },
+  "test_count": 9,
+  "costs": {
+    "compute": 0.0036,
+    "data_transfer": 0.081,
+    "client_overhead": 0.0016,
+    "setup_teardown": 0.0061,
+    "total": 0.0923
+  },
+  "per_test": [
+    {
+      "instance_type": "t3.micro",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000173,
+        "data_transfer": 0.009,
+        "total": 0.009173
+      },
+      "pricing": {
+        "hourly_rate": 0.0104,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.micro",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000173,
+        "data_transfer": 0.009,
+        "total": 0.009173
+      },
+      "pricing": {
+        "hourly_rate": 0.0104,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.micro",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000173,
+        "data_transfer": 0.009,
+        "total": 0.009173
+      },
+      "pricing": {
+        "hourly_rate": 0.0104,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.small",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000347,
+        "data_transfer": 0.009,
+        "total": 0.009347
+      },
+      "pricing": {
+        "hourly_rate": 0.0208,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.small",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000347,
+        "data_transfer": 0.009,
+        "total": 0.009347
+      },
+      "pricing": {
+        "hourly_rate": 0.0208,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.small",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000347,
+        "data_transfer": 0.009,
+        "total": 0.009347
+      },
+      "pricing": {
+        "hourly_rate": 0.0208,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.medium",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000693,
+        "data_transfer": 0.009,
+        "total": 0.009693
+      },
+      "pricing": {
+        "hourly_rate": 0.0416,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.medium",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000693,
+        "data_transfer": 0.009,
+        "total": 0.009693
+      },
+      "pricing": {
+        "hourly_rate": 0.0416,
+        "data_transfer_rate": 0.09
+      }
+    },
+    {
+      "instance_type": "t3.medium",
+      "duration": {
+        "seconds": 60,
+        "hours": 0.0167
+      },
+      "costs": {
+        "compute": 0.000693,
+        "data_transfer": 0.009,
+        "total": 0.009693
+      },
+      "pricing": {
+        "hourly_rate": 0.0416,
+        "data_transfer_rate": 0.09
+      }
+    }
+  ],
+  "budget_impact": {
+    "total_budget": 120,
+    "estimated_cost": 0.0923,
+    "percentage_used": 0.08,
+    "remaining": 119.9077,
+    "status": "safe"
+  },
+  "timestamp": "2025-12-05T10:07:06.212097"
+}

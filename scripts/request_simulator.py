@@ -123,10 +123,10 @@ class RequestSimulator:
     
     async def run_simulation(self):
         """Запускає симуляцію HTTP запитів"""
-        logger.info(f"🚀 Початок симуляції запитів")
-        logger.info(f"📊 Цільовий сервер: {self.target_url}")
-        logger.info(f"⚡ Запитів/сек: {self.rps}")
-        logger.info(f"⏱️ Тривалість: {self.duration}с")
+        logger.info(f"Початок симуляції запитів")
+        logger.info(f"Цільовий сервер: {self.target_url}")
+        logger.info(f"Запитів/сек: {self.rps}")
+        logger.info(f"Тривалість: {self.duration}с")
         print("-" * 50)
 
         end_time = time.time() + self.duration
@@ -166,7 +166,7 @@ class RequestSimulator:
                 if elapsed % 10 == 0:
                     success_rate = (self.results['successful_requests'] / max(self.results['total_requests'], 1)) * 100
                     avg_response = sum(self.results['response_times']) / max(len(self.results['response_times']), 1) if self.results['response_times'] else 0
-                    logger.info(f"⏳ {elapsed}с | Успішних: {self.results['successful_requests']} | "
+                    logger.info(f"[{elapsed}с] Успішних: {self.results['successful_requests']} | "
                           f"Успішність: {success_rate:.1f}% | Avg Response: {avg_response:.3f}с")
 
                 # Чекаємо до наступної пачки
@@ -177,12 +177,12 @@ class RequestSimulator:
     def print_summary(self):
         """Виводить підсумкову статистику"""
         print("\n" + "=" * 50)
-        print("📊 РЕЗУЛЬТАТИ ТЕСТУВАННЯ")
+        print("РЕЗУЛЬТАТИ ТЕСТУВАННЯ")
         print("=" * 50)
-        
+
         print(f"Всього запитів: {self.results['total_requests']}")
-        print(f"✅ Успішних: {self.results['successful_requests']}")
-        print(f"❌ Невдалих: {self.results['failed_requests']}")
+        print(f"[OK] Успішних: {self.results['successful_requests']}")
+        print(f"[FAIL] Невдалих: {self.results['failed_requests']}")
         
         if self.results['response_times']:
             avg_time = sum(self.results['response_times']) / len(self.results['response_times'])
@@ -195,16 +195,16 @@ class RequestSimulator:
             p95 = sorted_times[int(len(sorted_times) * 0.95)]
             p99 = sorted_times[int(len(sorted_times) * 0.99)]
             
-            print(f"\n⏱️  Час відгуку:")
+            print(f"\nЧас відгуку:")
             print(f"  Середній: {avg_time:.3f}с")
             print(f"  Мін: {min_time:.3f}с")
             print(f"  Макс: {max_time:.3f}с")
             print(f"  P50: {p50:.3f}с")
             print(f"  P95: {p95:.3f}с")
             print(f"  P99: {p99:.3f}с")
-        
+
         success_rate = (self.results['successful_requests'] / max(self.results['total_requests'], 1)) * 100
-        print(f"\n✨ Успішність: {success_rate:.2f}%")
+        print(f"\nУспішність: {success_rate:.2f}%")
         print("=" * 50)
     
     def save_results(self, filename: str = 'test_results.json'):
@@ -224,8 +224,8 @@ class RequestSimulator:
         
         with open(filename, 'w') as f:
             json.dump(output, f, indent=2)
-        
-        print(f"\n💾 Результати збережено: {filename}")
+
+        print(f"\nРезультати збережено: {filename}")
 
 
 async def main():
@@ -246,7 +246,7 @@ async def main():
         simulator.print_summary()
         simulator.save_results()
     except KeyboardInterrupt:
-        print("\n\n⚠️  Тест перервано користувачем")
+        print("\n\n[STOPPED] Тест перервано користувачем")
         simulator.print_summary()
         simulator.save_results()
 

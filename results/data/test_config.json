@@ -1,0 +1,11 @@
+{
+  "instances": [
+    "t3.medium"
+  ],
+  "rps_levels": [
+    2000
+  ],
+  "test_duration": 30,
+  "mode": "full",
+  "timestamp": "2025-12-04T07:34:38.257Z"
+}
