@@ -56,7 +56,13 @@
       "Bash(wc:*)",
       "Bash(timeout 420 ping:*)",
       "Bash(ping:*)",
-      "Bash(py scripts/visualize_results.py:*)"
+      "Bash(py scripts/visualize_results.py:*)",
+      "Bash(py:*)",
+      "Bash(start:*)",
+      "Bash(timeout 5 ping:*)",
+      "Bash(exit 0)",
+      "Bash(timeout 3 ping:*)",
+      "Bash(del nul)"
     ],
     "deny": [],
     "ask": []

@@ -55,6 +55,14 @@
 - 🎖️ **Military Use Cases** - Delta, Aeneas, Cyber Defense, Logistix
 - 🏆 **Competitive Analysis** - порівняння з AWS Cost Explorer, CloudHealth, Spot.io
 
+### Production-Ready Features (DAY 2-3!)
+- 🎲 **Monte Carlo Validation** - 10,000 симуляцій для статистичної перевірки (p<0.000001)
+- 🚀 **REST API** - 10 endpoints для інтеграції з CI/CD та mobile apps
+- ⚙️ **Automated Deployment** - 7-step pipeline від TOPSIS до AWS deploy
+- 📊 **Prometheus Exporter** - метрики для Grafana моніторингу
+- 🎯 **Military Case Studies** - $391,114/рік економія = 17 Bayraktar TB2 drones
+- 🎪 **API Demo Scripts** - ready-to-use демонстрації для захисту
+
 ## 🏗️ Архітектура
 
 **Детальна архітектура:** [ARCHITECTURE.md](docs/ARCHITECTURE.md) | [ARCHITECTURE_DIAGRAM.md](docs/ARCHITECTURE_DIAGRAM.md)
@@ -171,6 +179,106 @@ allowed_ssh_cidr = "YOUR_IP/32"  # ВАЖЛИВО: вкажіть вашу IP!
 ```
 
 ## 🎮 Використання
+
+### Quick Start: Production-Ready Features
+
+#### 1. Monte Carlo Statistical Validation
+
+```bash
+# Запустіть 10,000 симуляцій для статистичної перевірки TOPSIS
+python scripts/monte_carlo_validation.py
+
+# Результат:
+# - Probability distributions для кожної альтернативи
+# - 95% confidence intervals
+# - ANOVA test (p < 0.000001)
+# - 6 professional visualizations
+```
+
+#### 2. REST API Server
+
+```bash
+# Запустіть API server на port 5000
+python scripts/api_server.py
+
+# Перевірте доступність:
+curl http://localhost:5000/api/health
+
+# 10 доступних endpoints:
+# GET  /api/health          - Health check
+# GET  /api/status          - System status
+# GET  /api/results         - Latest TOPSIS results
+# POST /api/optimize        - Run optimization
+# POST /api/optimize/custom-weights  - Custom criteria weights
+# GET  /api/monte-carlo     - Monte Carlo results
+# GET  /api/methods         - Method comparison
+# GET  /api/sensitivity     - Sensitivity analysis
+# GET  /api/charts/<name>   - Visualization charts
+```
+
+#### 3. Automated Deployment Pipeline
+
+```bash
+# Dry-run mode (тестування без deploy)
+python scripts/auto_deploy.py --dry-run
+
+# Production deployment (DANGEROUS! Потребує AWS credentials)
+python scripts/auto_deploy.py --auto-approve
+
+# 7-step pipeline:
+# 1. Load TOPSIS results
+# 2. Update Terraform variables
+# 3. Terraform init
+# 4. Terraform plan
+# 5. Terraform apply
+# 6. Health checks
+# 7. Get deployment info
+```
+
+#### 4. Prometheus Metrics Exporter
+
+```bash
+# Запустіть exporter на port 9090
+python scripts/prometheus_exporter.py
+
+# Metrics доступні на:
+# http://localhost:9090/metrics
+
+# Prometheus конфігурація:
+scrape_configs:
+  - job_name: 'topsis-optimization'
+    static_configs:
+      - targets: ['localhost:9090']
+```
+
+#### 5. API Demo для захисту
+
+```bash
+# Windows:
+demo\api_demo.bat
+
+# Linux/Mac:
+chmod +x demo/api_demo.sh
+./demo/api_demo.sh
+
+# Демонструє:
+# - Health check
+# - TOPSIS optimization
+# - Monte Carlo validation
+# - Custom weights (cost-focused)
+# - Military use case (Delta system)
+# - CI/CD integration example
+```
+
+#### 6. Military Case Studies
+
+Детальні кейси у [MILITARY_CASE_STUDY.md](docs/MILITARY_CASE_STUDY.md):
+- **Delta** (Artillery): $4,589/year savings (25 instances)
+- **Logistix** (Supply Chain): $343,325/year (1,250 warehouses)
+- **Aeneas** (Intelligence): $28,000/year (auto-scaling)
+- **Total Impact**: $391,114/year = 17 Bayraktar TB2 drones
+
+---
 
 ### Варіант А: Повна автоматизація
 

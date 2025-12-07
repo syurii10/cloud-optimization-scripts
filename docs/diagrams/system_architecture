@@ -1,0 +1,94 @@
+digraph "Cloud Optimization System Architecture" {
+	graph [bgcolor=white fontcolor="#2D3436" fontname="Sans-Serif" fontsize=14 label="Cloud Optimization System Architecture" nodesep=0.60 pad=0.5 rankdir=TB ranksep=0.75 splines=ortho]
+	node [fixedsize=true fontcolor="#2D3436" fontname="Sans-Serif" fontsize=12 height=1.4 imagescale=true labelloc=b shape=box style=rounded width=1.4]
+	edge [color="#7B8894" fontsize=10]
+	"3bad3507c71b46629ec39a18e7bfdad6" [label="DevOps Engineer" height=1.9 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/onprem/client\users.png" shape=none]
+	subgraph "cluster_Control Layer" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Control Layer" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		b74712ac13d54a1c9df4d8cb400c4497 [label="Control Panel
+(Interactive Config)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+		d0e6a88bab824b63bcf994350308e234 [label="Live Dashboard
+(HTTP Server)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+	}
+	subgraph "cluster_Core Optimization Engine" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Core Optimization Engine" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		subgraph "cluster_Data Collection" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="Data Collection" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			a79f3efbeb7e4239a3688299309763c5 [label="Request Simulator
+(Load Generator)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+			"40290af6f5ef4075b4de9abb97d81194" [label="Metrics Collector
+(CPU/RAM/Latency)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+		}
+		subgraph "cluster_MCDM Analysis" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="MCDM Analysis" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"72e02609c9ec44c794507f8fc1156119" [label="TOPSIS Optimizer
+(5 Criteria)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+			"113ca02f069a4ef5a95d6583713ca371" [label="Sensitivity Analyzer
+(Weight Variations)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+			dc6837f2bac6496784ac916d32830b17 [label="Method Comparator
+(TOPSIS/SAW/WPM)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+		}
+		subgraph cluster_Reporting {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label=Reporting labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"24d1c1687eeb472abbd940810e065118" [label="Results Visualizer
+(6 Charts)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+			"53ae30c4c0794afaab41e2c41d925009" [label="Report Generator
+(Markdown/PDF)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+			"93945f5386034048a5780852ae932fa9" [label="Cost Predictor
+(AWS Pricing)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/programming/language\python.png" shape=none]
+		}
+	}
+	subgraph "cluster_AWS Infrastructure (Terraform)" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="AWS Infrastructure (Terraform)" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		subgraph "cluster_EC2 Instances" {
+			graph [bgcolor="#EBF3E7" fontname="Sans-Serif" fontsize=12 label="EC2 Instances" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+			"6a6f0c0935b04b7d917211a27300d50b" [label="t3.micro
+1 vCPU, 1GB" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/aws/compute\ec2.png" shape=none]
+			a5f49f0b8e6f47aeb64350aeb5e1d3e3 [label="t3.small
+2 vCPU, 2GB" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/aws/compute\ec2.png" shape=none]
+			"4a6fc692083b4b0982381540dd16c274" [label="t3.medium
+2 vCPU, 4GB" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/aws/compute\ec2.png" shape=none]
+		}
+		b45dddc8a6cf4bfab942890006907f3b [label="CPU-Intensive
+Server (Flask)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/onprem/compute\server.png" shape=none]
+	}
+	subgraph "cluster_Results Storage" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Results Storage" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"2d28e0f7ce1843db99d60044eea0daed" [label="JSON Files
+(results/data/)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/onprem/database\postgresql.png" shape=none]
+		e6e0060014ba456cbb604e3f13e6f806 [label="Visualizations
+(results/charts/)" height=2.3 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/onprem/database\postgresql.png" shape=none]
+	}
+	subgraph "cluster_Version Control" {
+		graph [bgcolor="#E5F5FD" fontname="Sans-Serif" fontsize=12 label="Version Control" labeljust=l pencolor="#AEB6BE" rankdir=LR shape=box style=rounded]
+		"46a16086988540e9a2d15a9edc273cc1" [label="GitHub Repository" height=1.9 image="C:\Users\syuri\AppData\Local\Programs\Python\Python313\Lib\site-packages\resources/onprem/vcs\github.png" shape=none]
+	}
+	"3bad3507c71b46629ec39a18e7bfdad6" -> b74712ac13d54a1c9df4d8cb400c4497 [label="1. Configure Test" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b74712ac13d54a1c9df4d8cb400c4497 -> "6a6f0c0935b04b7d917211a27300d50b" [label="2. Deploy" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b74712ac13d54a1c9df4d8cb400c4497 -> a5f49f0b8e6f47aeb64350aeb5e1d3e3 [label="2. Deploy" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b74712ac13d54a1c9df4d8cb400c4497 -> "4a6fc692083b4b0982381540dd16c274" [label="2. Deploy" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"6a6f0c0935b04b7d917211a27300d50b" -> b45dddc8a6cf4bfab942890006907f3b [label="CPU Server" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a5f49f0b8e6f47aeb64350aeb5e1d3e3 -> b45dddc8a6cf4bfab942890006907f3b [label="CPU Server" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"4a6fc692083b4b0982381540dd16c274" -> b45dddc8a6cf4bfab942890006907f3b [label="CPU Server" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	a79f3efbeb7e4239a3688299309763c5 -> b45dddc8a6cf4bfab942890006907f3b [label="3. Load Test
+(500/2000/5000 RPS)" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b45dddc8a6cf4bfab942890006907f3b -> "40290af6f5ef4075b4de9abb97d81194" [label="4. Collect Metrics" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"40290af6f5ef4075b4de9abb97d81194" -> "72e02609c9ec44c794507f8fc1156119" [label="5. Raw Data" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"72e02609c9ec44c794507f8fc1156119" -> "113ca02f069a4ef5a95d6583713ca371" [label="6. TOPSIS Scores" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"113ca02f069a4ef5a95d6583713ca371" -> dc6837f2bac6496784ac916d32830b17 [label="7. Stability Data" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	dc6837f2bac6496784ac916d32830b17 -> "24d1c1687eeb472abbd940810e065118" [label="8. Validated Results" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	dc6837f2bac6496784ac916d32830b17 -> "93945f5386034048a5780852ae932fa9" [label="9. Analysis Data" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"24d1c1687eeb472abbd940810e065118" -> e6e0060014ba456cbb604e3f13e6f806 [label="10. Save Charts" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"93945f5386034048a5780852ae932fa9" -> "2d28e0f7ce1843db99d60044eea0daed" [label="11. Save JSON" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	e6e0060014ba456cbb604e3f13e6f806 -> "53ae30c4c0794afaab41e2c41d925009" [label="12. Generate Report" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"2d28e0f7ce1843db99d60044eea0daed" -> "53ae30c4c0794afaab41e2c41d925009" [label="12. Generate Report" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	e6e0060014ba456cbb604e3f13e6f806 -> d0e6a88bab824b63bcf994350308e234 [label="13. Display" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"2d28e0f7ce1843db99d60044eea0daed" -> d0e6a88bab824b63bcf994350308e234 [label="13. Display" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	d0e6a88bab824b63bcf994350308e234 -> "3bad3507c71b46629ec39a18e7bfdad6" [label="14. View Results" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	b74712ac13d54a1c9df4d8cb400c4497 -> "46a16086988540e9a2d15a9edc273cc1" [label="Git Push" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"72e02609c9ec44c794507f8fc1156119" -> "46a16086988540e9a2d15a9edc273cc1" [label="Git Push" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"113ca02f069a4ef5a95d6583713ca371" -> "46a16086988540e9a2d15a9edc273cc1" [label="Git Push" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	dc6837f2bac6496784ac916d32830b17 -> "46a16086988540e9a2d15a9edc273cc1" [label="Git Push" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"24d1c1687eeb472abbd940810e065118" -> "46a16086988540e9a2d15a9edc273cc1" [label="Git Push" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+	"53ae30c4c0794afaab41e2c41d925009" -> "46a16086988540e9a2d15a9edc273cc1" [label="Git Push" dir=forward fontcolor="#2D3436" fontname="Sans-Serif" fontsize=13]
+}
