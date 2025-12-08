@@ -234,6 +234,19 @@ class CloudOrchestrator:
         time.sleep(60)
 
         self.log(f"Сервер {ip_address} готовий!", "SUCCESS")
+
+        # КРИТИЧНО: Оновлюємо код з GitHub на сервері!
+        self.log(f"Оновлення коду з GitHub на {ip_address}...", "INFO")
+        update_cmd = (
+            f'ssh -o StrictHostKeyChecking=no ubuntu@{ip_address} '
+            f'"cd /home/ubuntu/scripts && git pull origin master"'
+        )
+        success, stdout, stderr = self.run_command(update_cmd)
+        if success:
+            self.log(f"Код оновлено на {ip_address}", "SUCCESS")
+        else:
+            self.log(f"Не вдалося оновити код: {stderr}", "WARN")
+
         return True
 
     def monitor_test_realtime(self, target_ip, instance_type, rps, duration):
