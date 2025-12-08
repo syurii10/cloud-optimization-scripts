@@ -62,7 +62,9 @@
       "Bash(timeout 5 ping:*)",
       "Bash(exit 0)",
       "Bash(timeout 3 ping:*)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(terraform init:*)",
+      "Bash(timeout 10 ping:*)"
     ],
     "deny": [],
     "ask": []

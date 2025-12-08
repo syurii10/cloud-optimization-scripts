@@ -132,9 +132,10 @@ class QuickTest:
 
         # Запуск metrics_collector
         self.log("Запуск збору метрик...", "INFO")
+        # ВИПРАВЛЕНО: передаємо metrics.json як 3-й аргумент
         ssh_command = (
             f'ssh -o StrictHostKeyChecking=no -f ubuntu@{target_ip} '
-            f'"bash -c \'cd /home/ubuntu/scripts && python3 metrics_collector.py 1 90 > metrics.log 2>&1 &\'"'
+            f'"bash -c \'cd /home/ubuntu/scripts && python3 metrics_collector.py 1 90 metrics.json > metrics.log 2>&1 &\'"'
         )
         self.run_command(ssh_command)
         time.sleep(5)

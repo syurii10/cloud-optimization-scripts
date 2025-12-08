@@ -337,9 +337,10 @@ class CloudOrchestrator:
 
         # Використовуємо bash -c з правильним background запуском
         # ОНОВЛЕНО: інтервал 1 секунда для детальних метрик!
+        # ВИПРАВЛЕНО: передаємо metrics.json як 3-й аргумент для коректного збереження
         ssh_command = (
             f'ssh -o StrictHostKeyChecking=no -f ubuntu@{target_ip} '
-            f'"bash -c \'cd /home/ubuntu/scripts && python3 metrics_collector.py 1 90 > metrics.log 2>&1 &\'"'
+            f'"bash -c \'cd /home/ubuntu/scripts && python3 metrics_collector.py 1 90 metrics.json > metrics.log 2>&1 &\'"'
         )
         success, _, stderr = self.run_command(ssh_command)
 
