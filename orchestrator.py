@@ -235,7 +235,25 @@ class CloudOrchestrator:
 
         self.log(f"Сервер {ip_address} готовий!", "SUCCESS")
 
-        # КРИТИЧНО: Оновлюємо код з GitHub на сервері!
+        # КРИТИЧНО: Очікуємо завершення git clone та оновлюємо код!
+        self.log(f"Очікування завершення git clone на {ip_address}...", "INFO")
+
+        # Перевіряємо чи існує директорія scripts (чекаємо до 60 секунд)
+        for attempt in range(12):  # 12 * 5 = 60 секунд
+            check_cmd = (
+                f'ssh -o StrictHostKeyChecking=no ubuntu@{ip_address} '
+                f'"test -d /home/ubuntu/scripts && echo EXISTS"'
+            )
+            success, stdout, stderr = self.run_command(check_cmd)
+            if success and "EXISTS" in stdout:
+                self.log(f"Директорія scripts знайдена на {ip_address}", "SUCCESS")
+                break
+            time.sleep(5)
+        else:
+            self.log(f"Timeout очікування git clone на {ip_address}", "WARN")
+            return True  # Продовжуємо навіть якщо git clone не завершився
+
+        # Тепер оновлюємо код з GitHub
         self.log(f"Оновлення коду з GitHub на {ip_address}...", "INFO")
         update_cmd = (
             f'ssh -o StrictHostKeyChecking=no ubuntu@{ip_address} '
