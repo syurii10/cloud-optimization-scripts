@@ -27,10 +27,14 @@ resource "aws_instance" "target_server" {
               apt-get update
               apt-get install -y python3-pip git python3-psutil
 
-              # Клонуємо репозиторій зі скриптами
+              # Клонуємо репозиторій зі скриптами (або оновлюємо якщо вже існує)
               cd /home/ubuntu
-              git clone ${var.github_repo} scripts
+              if [ ! -d "scripts" ]; then
+                git clone ${var.github_repo} scripts
+              fi
               cd scripts
+              # ВАЖЛИВО: завжди оновлюємо до latest версії з GitHub
+              git pull origin master || true
 
               chown -R ubuntu:ubuntu /home/ubuntu/scripts
 
@@ -116,10 +120,14 @@ resource "aws_instance" "comparison_servers" {
               apt-get update
               apt-get install -y python3-pip git python3-psutil
 
-              # Клонуємо репозиторій зі скриптами
+              # Клонуємо репозиторій зі скриптами (або оновлюємо якщо вже існує)
               cd /home/ubuntu
-              git clone ${var.github_repo} scripts
+              if [ ! -d "scripts" ]; then
+                git clone ${var.github_repo} scripts
+              fi
               cd scripts
+              # ВАЖЛИВО: завжди оновлюємо до latest версії з GitHub
+              git pull origin master || true
 
               chown -R ubuntu:ubuntu /home/ubuntu/scripts
 

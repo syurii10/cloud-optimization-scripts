@@ -238,7 +238,8 @@ class CloudOrchestrator:
 
     def monitor_test_realtime(self, target_ip, instance_type, rps, duration):
         """Real-Time моніторинг тесту з оновленням dashboard (WOW-ефект!)"""
-        streaming_file = Path("current_test.json")
+        # ВИПРАВЛЕНО: правильні шляхи до results/data/
+        streaming_file = Path("results/data/current_test.json")
         start_time = time.time()
         end_time = start_time + duration
 
@@ -247,7 +248,7 @@ class CloudOrchestrator:
         while time.time() < end_time:
             try:
                 # Завантажуємо поточні метрики з target сервера
-                temp_metrics = Path("temp_metrics.json")
+                temp_metrics = Path("results/data/temp_metrics.json")
                 success, _, _ = self.run_command(
                     f"scp -o StrictHostKeyChecking=no ubuntu@{target_ip}:/home/ubuntu/scripts/metrics.json {temp_metrics}"
                 )
@@ -384,8 +385,11 @@ class CloudOrchestrator:
         # 3. Завантаження результатів
         self.log("Завантаження результатів з серверів...", "PROGRESS")
 
-        test_results_file = self.results_dir / f"test_{instance_type}_{rps}rps.json"
-        metrics_file = self.results_dir / f"metrics_{instance_type}_{rps}rps.json"
+        # ВИПРАВЛЕНО: зберігаємо в results/data/ для чіткої структури
+        data_dir = self.results_dir / "data"
+        data_dir.mkdir(exist_ok=True)
+        test_results_file = data_dir / f"test_{instance_type}_{rps}rps.json"
+        metrics_file = data_dir / f"metrics_{instance_type}_{rps}rps.json"
 
         # Завантажуємо test_results.json з client
         self.log(f"Завантаження test_results.json з client ({client_ip})...", "INFO")
