@@ -191,47 +191,63 @@ class TOPSISOptimizer:
 
 
 def example_usage():
-    """Приклад використання"""
-    
-    # Приклад даних (замініть на реальні дані з тестів)
-    alternatives = {
-        't3.micro': {
-            'performance': 150,      # requests/sec
-            'response_time': 0.08,   # секунди
-            'cpu_usage': 45,         # відсотки
-            'memory_usage': 35,      # відсотки
-            'cost': 0.0104,          # $/година
-        },
-        't3.small': {
-            'performance': 300,
-            'response_time': 0.04,
-            'cpu_usage': 30,
-            'memory_usage': 25,
-            'cost': 0.0208,
-        },
-        't3.medium': {
-            'performance': 600,
-            'response_time': 0.02,
-            'cpu_usage': 20,
-            'memory_usage': 20,
-            'cost': 0.0416,
-        },
-    }
-    
+    """Приклад використання з реальними даними"""
+    from pathlib import Path
+
+    # ОНОВЛЕНО: Читаємо реальні дані з aggregated_results.json
+    aggregated_file = Path("results/data/aggregated_results.json")
+
+    if aggregated_file.exists():
+        print(f"\n✓ Завантаження даних з {aggregated_file}...")
+        with open(aggregated_file, 'r') as f:
+            alternatives = json.load(f)
+        print(f"  Знайдено {len(alternatives)} альтернатив: {list(alternatives.keys())}")
+    else:
+        print(f"\n⚠ Файл {aggregated_file} не знайдено!")
+        print("  Використовуються приклад даних для демонстрації...")
+
+        # Fallback: Приклад даних якщо aggregated_results.json не існує
+        alternatives = {
+            't3.micro': {
+                'performance': 150,      # requests/sec
+                'response_time': 0.08,   # секунди
+                'cpu_usage': 45,         # відсотки
+                'memory_usage': 35,      # відсотки
+                'cost': 0.0104,          # $/година
+            },
+            't3.small': {
+                'performance': 300,
+                'response_time': 0.04,
+                'cpu_usage': 30,
+                'memory_usage': 25,
+                'cost': 0.0208,
+            },
+            't3.medium': {
+                'performance': 600,
+                'response_time': 0.02,
+                'cpu_usage': 20,
+                'memory_usage': 20,
+                'cost': 0.0416,
+            },
+        }
+
     # Створення оптимізатора
     optimizer = TOPSISOptimizer()
-    
+
     # Виконання оптимізації
     results = optimizer.optimize(alternatives)
-    
+
     # Вивід результатів
     optimizer.print_results(results)
-    
-    # Збереження результатів
-    with open('optimization_results.json', 'w', encoding='utf-8') as f:
+
+    # Збереження результатів у results/data/
+    output_file = Path('results/data/optimization_results.json')
+    output_file.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(output_file, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
 
-    print("\nРезультати збережено у optimization_results.json")
+    print(f"\n✓ Результати збережено у {output_file}")
 
 
 if __name__ == "__main__":

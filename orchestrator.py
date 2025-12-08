@@ -28,9 +28,10 @@ class CloudOrchestrator:
             self.test_mode = config.get('mode', 'full')
         else:
             # Default конфігурація для магістерської роботи
+            # ОНОВЛЕНО: 3 інстанси × 3 RPS рівні = 9 тестів для якісних даних
             self.instance_types = ['t3.micro', 't3.small', 't3.medium']
-            self.rps_levels = [500, 2000, 5000]
-            self.test_duration = 60
+            self.rps_levels = [1000, 5000, 10000]  # Змінено: було 500, 2000, 5000
+            self.test_duration = 90  # Збільшено з 60 до 90 сек для стабільності
             self.test_mode = 'full'
 
         self.results = []
@@ -612,16 +613,99 @@ class CloudOrchestrator:
 
     def save_results(self):
         """Збереження агрегованих результатів"""
-        summary_file = self.results_dir / "summary.json"
-        
+        summary_file = self.results_dir / "data" / "summary.json"
+
         with open(summary_file, 'w') as f:
             json.dump({
                 'timestamp': datetime.now().isoformat(),
                 'total_tests': len(self.results),
                 'results': self.results
             }, f, indent=2)
-        
+
         self.log(f"Результати збережено: {summary_file}", "SUCCESS")
+
+        # КРИТИЧНО: Створюємо aggregated_results.json для optimizer.py
+        self.create_aggregated_results()
+
+    def create_aggregated_results(self):
+        """
+        Створює aggregated_results.json з усередненими даними для TOPSIS optimizer
+
+        Формат для optimizer.py:
+        {
+          "t3.micro": {
+            "performance": 150,
+            "response_time": 0.08,
+            "cpu_usage": 45,
+            "memory_usage": 35,
+            "cost": 0.0104
+          },
+          ...
+        }
+        """
+        self.log("Створення aggregated_results.json для optimizer...", "INFO")
+
+        # Групуємо результати по типу інстансу
+        aggregated = {}
+        instance_data = {inst: [] for inst in self.instance_types}
+
+        # Читаємо всі test та metrics файли
+        data_dir = self.results_dir / "data"
+
+        for instance_type in self.instance_types:
+            for rps in self.rps_levels:
+                test_file = data_dir / f"test_{instance_type}_{rps}rps.json"
+                metrics_file = data_dir / f"metrics_{instance_type}_{rps}rps.json"
+
+                if test_file.exists() and metrics_file.exists():
+                    try:
+                        with open(test_file, 'r') as f:
+                            test_data = json.load(f)
+                        with open(metrics_file, 'r') as f:
+                            metrics_data = json.load(f)
+
+                        # Екстрагуємо метрики
+                        instance_data[instance_type].append({
+                            'performance': test_data.get('metrics', {}).get('requests_per_second', 0),
+                            'response_time': test_data.get('metrics', {}).get('avg_response_time', 0),
+                            'cpu_usage': metrics_data.get('summary', {}).get('cpu', {}).get('avg', 0),
+                            'memory_usage': metrics_data.get('summary', {}).get('memory', {}).get('avg', 0),
+                        })
+                    except Exception as e:
+                        self.log(f"Помилка читання {instance_type}_{rps}rps: {e}", "WARN")
+
+        # Усереднюємо дані по кожному інстансу
+        cost_map = {
+            't3.micro': 0.0104,
+            't3.small': 0.0208,
+            't3.medium': 0.0416,
+        }
+
+        for instance_type in self.instance_types:
+            if instance_data[instance_type]:
+                # Усереднення по всіх RPS рівнях
+                avg_performance = sum([d['performance'] for d in instance_data[instance_type]]) / len(instance_data[instance_type])
+                avg_response_time = sum([d['response_time'] for d in instance_data[instance_type]]) / len(instance_data[instance_type])
+                avg_cpu = sum([d['cpu_usage'] for d in instance_data[instance_type]]) / len(instance_data[instance_type])
+                avg_memory = sum([d['memory_usage'] for d in instance_data[instance_type]]) / len(instance_data[instance_type])
+
+                aggregated[instance_type] = {
+                    'performance': round(avg_performance, 2),
+                    'response_time': round(avg_response_time, 4),
+                    'cpu_usage': round(avg_cpu, 2),
+                    'memory_usage': round(avg_memory, 2),
+                    'cost': cost_map[instance_type]
+                }
+
+        # Зберігаємо aggregated results
+        aggregated_file = data_dir / "aggregated_results.json"
+        with open(aggregated_file, 'w') as f:
+            json.dump(aggregated, f, indent=2)
+
+        self.log(f"✓ Створено {aggregated_file}", "SUCCESS")
+        self.log(f"  Альтернативи: {list(aggregated.keys())}", "INFO")
+
+        return aggregated
 
 
 def main():
